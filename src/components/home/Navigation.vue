@@ -8,10 +8,10 @@
       <div class="nav-icon iconfont">&#xe648;</div>
       <h3>排行榜</h3>
     </router-link>
-    <div class="nav-icon-wrap iconfont">
+    <router-link to="/singer" tag="div" class="nav-icon-wrap iconfont">
       <div class="nav-icon iconfont">&#xe933;</div>
       <h3>歌手</h3>
-    </div>
+    </router-link>
   </div>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
-    <div ref="wrapper">
-      <slot></slot>
-    </div>
+  <div ref="wrapper">
+    <slot></slot>
+  </div>
 </template>
 
 <script>
@@ -20,6 +20,10 @@ export default {
     data: {
       type: Array,
       default: null
+    },
+    pullup: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
@@ -31,6 +35,13 @@ export default {
         probeType: this.probeType,
         click: this.click
       })
+      if (this.pullup) {
+        this.scroll.on('scrollEnd', () => {
+          if (this.scroll.y <= (this.scroll.maxScrollY + 50)) {
+            this.$emit('scrollToEnd')
+          }
+        })
+      }
     },
     enable() {
       this.scroll && this.scroll.enable()
@@ -40,8 +51,8 @@ export default {
     },
     refresh() {
       this.scroll && this.scroll.refresh()
-      console.log('ref')
-    }
+    },
+    
   },
   watch: {
     data() {

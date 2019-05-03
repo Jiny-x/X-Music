@@ -1,6 +1,6 @@
 <template>
   <div class="banner">
-    <swiper :options="swiperOption">
+    <swiper clsss="swiper-container" :options="swiperOption">
       <swiper-slide class="slide" v-for="(item, index) of bannerData" :key="index">
         <img @load="loadImg" :src="item.imageUrl">
       </swiper-slide>
@@ -38,13 +38,14 @@ export default {
   .banner >>>.swiper-pagination-bullet-active
     background: $color-theme
   .banner
+    position: relative
     width: 100%
+    height: 0
+    padding-bottom: 31.87%
     .slide
       position: relative
-      width: 100%
       padding-bottom: 31.87%
       img
         position: absolute
         width: 100%
-        height: 100%
 </style>

@@ -2,7 +2,7 @@
   <div class="home-header">
     <div class="logo"></div>
     <div class="person iconfont">&#xe64f;</div>
-    <div class="search"><span class="search-icon iconfont">&#xe659;</span>专辑/歌单/歌名</div>
+    <router-link to="/search" tag="div" class="search"><span class="search-icon iconfont">&#xe659;</span>专辑/歌单/歌名</router-link>
   </div>
 </template>
 

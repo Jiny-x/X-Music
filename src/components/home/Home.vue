@@ -16,7 +16,7 @@
 import {getBanner} from 'api/banner'
 import {getRecommend} from 'api/recommend'
 import {getRecommendNewSong} from 'api/newSong'
-import {DisposeSongData, getsingerMes} from 'common/js/disposeData'
+import {ObjData, getsingerMes} from 'common/js/disposeData'
 import Scroll from 'base/scroll/Scroll'
 import Loading from 'base/loading/Loading'
 import HomeHeader from './Header'
@@ -65,7 +65,6 @@ export default {
         if (res.status === 200 && res.statusText === 'OK') {
           this.newSong = this.songData(res.data.result)
         }
-        console.log(res.data.result)
       })
     },
     songData(originData) {
@@ -73,7 +72,7 @@ export default {
       originData.forEach(item => {
         item = item.song
         let singerMes = getsingerMes(item.album.artists, item.album.name)
-        resultData.push(new DisposeSongData(item.album.name, item.album.picUrl, singerMes, item.id))
+        resultData.push(new ObjData(item.album.name, item.album.picUrl, singerMes, item.id))
       })
       return resultData
     },

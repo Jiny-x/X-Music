@@ -15,25 +15,14 @@
         </div>
       </div>
     </div>
-    <div class="loading-conteiner" v-show="!newSong.length">
-      <loading></loading>
-    </div>
   </div>
 </template>
 
 <script>
-import Loading from 'base/loading/Loading'
-
 export default {
   name: 'Newsong',
-  components: {
-    Loading
-  },
   props: {
     newSong: Array
-  },
-  updated() {
-    console.log(this.newSong)
   }
 }
 </script>
@@ -44,6 +33,8 @@ export default {
   .new-song-head
     padding: .18rem .1rem
     font-weight: bold
+  .new-song-list
+    position: relative
   .new-song-item
     height: .5rem
     margin: 0 .1rem
@@ -77,9 +68,9 @@ export default {
         display: inline-block
         line-height: .5rem
         font-size: $font-size-large-x
-  .loading-conteiner
-    position: absolute
-    top: 50%
-    left: 50%
-    transform: translateX(-50%)
+    .loading-conteiner
+      position: absolute
+      top: 50%
+      left: 50%
+      transform: translateX(-50%)
 </style>

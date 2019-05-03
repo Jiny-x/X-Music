@@ -1,6 +1,6 @@
 <template>
   <div class="recommend">
-    <div class="recommend-head">推荐歌单</div>
+    <div class="recommend-head">热门推荐</div>
     <div class="recommend-songs">
       <div class="recommend-songs-wrap" v-for="item of recommendSongs" :key="item.id">
         <div class="recommend-icon-wrap">
@@ -8,9 +8,9 @@
         </div>
         <h3>{{item.name}}</h3>
       </div>
-    </div>
-    <div class="loading-conteiner" v-show="!recommendSongs.length">
-      <loading></loading>
+      <div class="loading-conteiner" v-show="!recommendSongs.length">
+        <loading></loading>
+      </div>
     </div>
   </div>
 </template>
@@ -36,6 +36,7 @@ export default {
     padding: .18rem .1rem
     font-weight: bold
   .recommend-songs
+    position: relative
     display: flex
     justify-content : space-around
     flex-wrap: wrap
