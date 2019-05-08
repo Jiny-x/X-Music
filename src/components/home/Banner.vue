@@ -41,10 +41,10 @@ export default {
     position: relative
     width: 100%
     height: 0
-    padding-bottom: 31.87%
+    padding-bottom: 37.18%
     .slide
       position: relative
-      padding-bottom: 31.87%
+      padding-bottom: 37.18%
       img
         position: absolute
         width: 100%

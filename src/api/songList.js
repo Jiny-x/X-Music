@@ -5,12 +5,17 @@ export function getSongList(cat, limit = 18, updateTime, offset) {
   console.log(url)
   return axios(url)
 }
-export function getHighQuality (cat = '全部', limit = 18, updateTime) {
+export function getHighQuality (limit = 18, updateTime, cat = '全部') {
   let url = updateTime ? 'api/top/playlist/highquality?cat=' + cat + '&limit=' + limit + '&before=' + updateTime : 'api/top/playlist/highquality' + '?limit=' + limit
   console.log(url)
   return axios(url)
+  // return axios(url)
 }
-export function getCatList() {
-  let url = 'api/playlist/catlist'
+export function getSongListDetail(id) {
+  let url = 'api/playlist/detail?id=' + id
+  return axios(url)
+}
+export function getSongUrl(id) {
+  let url = 'api/song/url?id=' + id
   return axios(url)
 }

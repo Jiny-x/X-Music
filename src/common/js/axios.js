@@ -1,4 +1,5 @@
 import originAxios from 'axios'
+
 export default function axios(url, param) {
   url += (url.indexOf('?') === -1 ? '?' : '&') + hashData(param)
   return originAxios.get(url)

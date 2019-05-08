@@ -4,7 +4,8 @@ import Home from 'components/home/Home'
 import Rank from 'components/rank/Rank'
 import Search from 'components/search/Search'
 import Singer from 'components/singer/Singer'
-import SongList from 'components/song-list/Song-list'
+import SongListSquare from 'components/song-list-square/Song-list-square'
+import Playlist from 'components/playlist/Playlist'
 
 Vue.use(Router)
 
@@ -18,7 +19,11 @@ export default new Router({
     {
       path: '/rank',
       name: 'Rank',
-      component: Rank
+      component: Rank,
+      children: [{
+        path: ':id',
+        component: Playlist
+      }]
     },
     {
       path: '/search',
@@ -31,9 +36,18 @@ export default new Router({
       component: Singer
     },
     {
-      path: '/song-list',
-      name: 'Song-list',
-      component: SongList
+      path: '/song-list-square',
+      name: 'Song-list-square',
+      component: SongListSquare,
+      children: [{
+        path: ':id',
+        component: Playlist
+      }]
+    },
+    {
+      path: '/playlist',
+      name: 'Playlist',
+      component: Playlist
     }
   ]
 })

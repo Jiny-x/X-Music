@@ -1,7 +1,7 @@
 <template>
   <div class="navigation border-bottom">
     <div class="nav-icon-wrap iconfont">
-      <router-link tag="div" to="/song-list" class="nav-icon iconfont">&#xe61b;</router-link>
+      <router-link tag="div" to="/song-list-square" class="nav-icon iconfont">&#xe61b;</router-link>
       <h3>歌单</h3>
     </div>
     <router-link tag="div" to="/rank" class="nav-icon-wrap iconfont">

@@ -11,16 +11,20 @@
       <a class="nav-item" :class="{'nav-item-active': 4 == activeNum}" @click="_getSongList('华语'), changeActive(4)">华语</a>
       <a class="nav-item" :class="{'nav-item-active': 5 == activeNum}" @click="_getSongList('舞曲'), changeActive(5)">舞曲</a>
     </div>
-    <scroll class="content-wrapper" ref="scroll" 
+    <scroll class="content-wrapper" ref="scroll"
       :data="songList"
       :pullup="pullup"
-      :bounce="bounce"
        @scrollToEnd="loadData"
        >
       <div class="song-list-container">
-        <div class="song-list-wrap" v-for="(item,index) of songList"  ref="listItem">
+        <div class="song-list-wrap"
+          v-for="item of songList"
+          :key="item.id"
+          ref="listItem"
+          @click="songListClick(item)"
+        >
           <div class="song-list-img-wrap">
-            <img v-lazy="item.picUrl + '?param=120y120'">
+            <img v-lazy="item.picUrl + '?param=200y200'">
           </div>
           <h3>{{item.name}}</h3>
         </div>
@@ -32,14 +36,16 @@
     <div class="loading-container" v-show="loadingShow">
       <loading></loading>
     </div>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
 import Scroll from 'base/scroll/Scroll'
-import {getSongList, getHighQuality} from 'api/songList'
-import {disposeData} from 'common/js/disposeData'
+import {getSongList, getHighQuality, getSongListDetail} from 'api/songList'
+import {SongListData, ceratSongList} from 'common/js/packData'
 import Loading from 'base/loading/Loading'
+import {mapMutations} from 'vuex'
 
 export default {
   name: 'SongList',
@@ -54,57 +60,63 @@ export default {
       loadingShow: false,
       cat: '',
       offset: 18,
-      pullup: true,
-      bounce: {
-        bottom: false
-      }
+      limit: 18,
+      pullup: true
     }
   },
   methods: {
+    ...mapMutations({
+      setSongList: 'SET_SONGLIST'
+    }),
+    songListClick(songList) {
+      this.$router.push({
+        path: `/song-list-square/${songList.id}`
+      })
+        this.setSongList(songList)
+    },
     // 获取歌单列表
-    _getSongList(cat, limit, updateTime, offset, load) {
+    _getSongList(cat, limit, updateTime, offset,load) {
       this.cat = cat
       if (!load) this.loadingShow = true
       if (!updateTime) this.songList = []
       if (cat === '精品') {
-        //获取精品歌单，访问的url不同
-        getHighQuality('全部', limit, updateTime).then(res => {
-          if (!updateTime) {
-            this.songList = disposeData(res.data.playlists, 'name', 'coverImgUrl', null, 'id', 'updateTime')//数据处理
-          } else {
-            this.songList = this.songList.concat(disposeData(res.data.playlists, 'name', 'coverImgUrl', null, 'id', 'updateTime'))//数据处理
+        getHighQuality(limit, updateTime).then(res => {
+          if (res.status === 200 && res.statusText === 'OK') {
+            this.createData(res)
           }
-          this.loadingShow = false
         })
       } else {
-        getSongList(cat, limit, updateTime, offset).then(res => {
-          if (!offset) {
-            this.offset = 12
-            this.songList = disposeData(res.data.playlists, 'name', 'coverImgUrl', null, 'id', 'updateTime')//数据处理
-          } else {
-            this.songList = this.songList.concat(disposeData(res.data.playlists, 'name', 'coverImgUrl', null, 'id', 'updateTime'))//数据处理
-          }
-          this.loadingShow = false
-        })
+          getSongList(cat, limit, updateTime, offset).then(res => {
+            if (res.status === 200 && res.statusText === 'OK') {
+              this.createData(res)
+            }
+          })
       }
+    },
+    createData(res) {
+      let playlists = res.data.playlists
+      playlists.forEach(item => {
+        let songListItem = ceratSongList(item)
+        this.songList.push(songListItem)
+      })
+      this.loadingShow = false
     },
     changeActive(num) {
       this.activeNum = num
     },
-
-    //获取瀑布流数据 
+    // 获取瀑布流数据
     waterFall(load) {
       let flag = true
       // let clientHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
       // let scrollTop = window.pageYOffset || document.documentElement.scrollTop
       // if (scrollTop + clientHeight >= document.body.offsetHeight) {
-        let len = this.songList.length -1
-        if (flag) {
-          flag = false
-          this._getSongList(this.cat, 18, this.songList[len].updateTime, this.offset, load)
-          this.offset += 18
-          flag = true
-        }
+      let len = this.songList.length - 1
+      if (flag) {
+        flag = false
+        this._getSongList(this.cat, this.limit, this.songList[len].updateTime, this.offset, load)
+        this.offset += this.limit
+        flag = true
+      }
       // }
     },
     loadData() {
@@ -112,7 +124,10 @@ export default {
     }
   },
   created() {
-    this._getSongList('精品', 12)
+    this._getSongList('精品', this.limit)
+  },
+  destroyed() {
+    console.log('des')
   }
 }
 </script>

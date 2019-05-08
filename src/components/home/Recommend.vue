@@ -2,9 +2,13 @@
   <div class="recommend">
     <div class="recommend-head">热门推荐</div>
     <div class="recommend-songs">
-      <div class="recommend-songs-wrap" v-for="item of recommendSongs" :key="item.id">
+      <div class="recommend-songs-wrap"
+        v-for="item of recommendSongs"
+        :key="item.id"
+        @click="songListClick(item)"
+      >
         <div class="recommend-icon-wrap">
-          <img :src="item.picUrl">
+          <img :src="`${item.picUrl}?param=200y200`">
         </div>
         <h3>{{item.name}}</h3>
       </div>
@@ -12,6 +16,7 @@
         <loading></loading>
       </div>
     </div>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -22,6 +27,13 @@ export default {
   name: 'Recommend',
   components: {
     Loading
+  },
+  methods: {
+    songListClick(songList) {
+      this.$router.push({
+        path: `/song-list-square/${songList.id}`
+      })
+    }
   },
   props: {
     recommendSongs: Array

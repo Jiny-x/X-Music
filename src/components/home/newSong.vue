@@ -8,7 +8,7 @@
         </div>
         <div class="new-song-info border-bottom">
           <div class="new-song-mes">
-            <h3>{{ item.songName }}</h3>
+            <h3>{{ item.name }}</h3>
             <p>{{ item.singerMes }}</p>
           </div>
           <div class="play-icon iconfont">&#xe61a;</div>

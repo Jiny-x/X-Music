@@ -6,9 +6,10 @@
         <banner @imgReady="imgReady" :bannerData="bannerData"></banner>
         <navigation></navigation>
         <recommend :recommendSongs="recommendSongs"></recommend>
-        <new-song :newSong="newSong"></new-song>
+        <new-song :newSong="newSong" v-show="this.recommendSongs.length"></new-song>
       </div>
     </scroll>
+    <!-- <router-view></router-view> -->
   </div>
 </template>
 

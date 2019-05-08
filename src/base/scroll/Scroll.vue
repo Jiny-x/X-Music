@@ -24,6 +24,10 @@ export default {
     pullup: {
       type: Boolean,
       default: false
+    },
+    bounce: {
+      type: Object,
+      default: null
     }
   },
   methods: {
@@ -33,7 +37,8 @@ export default {
       }
       this.scroll = new BScroll(this.$refs.wrapper, {
         probeType: this.probeType,
-        click: this.click
+        click: this.click,
+        // bounce: this.bounce
       })
       if (this.pullup) {
         this.scroll.on('scrollEnd', () => {
@@ -51,8 +56,7 @@ export default {
     },
     refresh() {
       this.scroll && this.scroll.refresh()
-    },
-    
+    }
   },
   watch: {
     data() {
