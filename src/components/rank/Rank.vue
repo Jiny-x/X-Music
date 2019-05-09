@@ -44,7 +44,7 @@
 
 <script>
 import {getRankList} from 'api/rank'
-import {disposeData} from 'common/js/disposeData'
+import {createSongList} from 'common/js/packData'
 import Loading from 'base/loading/Loading'
 import Scroll from 'base/scroll/Scroll'
 import {mapMutations} from 'vuex'
@@ -74,15 +74,24 @@ export default {
     },
     mapRequet(arr, chosen) {
       let newData = []
+      let resData = []
       let count = 0
-      arr.map(item => {
+      arr.map((item, index) => {
         getRankList(item).then(res => {
           if (res.status === 200 && res.statusText === 'OK') {
-            newData.push(res.data.playlist)
+            console.log(res.data)
+            
+            resData.push(res.data)
             // console.log(res)
             count++
             if (count === arr.length) {
-              newData = disposeData(newData, 'name', 'coverImgUrl', null, 'id', null, 'tracks')
+              console.log(resData)
+              resData.forEach(item => {
+                console.log(item)
+                newData.push(createSongList(item.playlist))
+                console.log(newData)
+              })
+              console.log(newData)
               // console.log(newData)
               for (let i = 0; i < 5; i++) {
                 let item = newData[i]

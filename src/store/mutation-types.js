@@ -1,5 +1,7 @@
 export const SET_SONGLIST = 'SET_SONGLIST'
 
+export const SET_SONGURL = 'SET_SONGURL'
+
 export const SET_PLAYING_STATE = 'SET_PLAYING_STATE'
 
 export const SET_FULL_SCREEN = 'SET_FULL_SCREEN'

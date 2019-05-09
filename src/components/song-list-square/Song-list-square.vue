@@ -44,7 +44,7 @@
 <script>
 import Scroll from 'base/scroll/Scroll'
 import {getSongList, getHighQuality, getSongListDetail} from 'api/songList'
-import {SongListData, ceratSongList} from 'common/js/packData'
+import {SongListData, createSongList} from 'common/js/packData'
 import Loading from 'base/loading/Loading'
 import {mapMutations} from 'vuex'
 
@@ -73,7 +73,7 @@ export default {
       this.$router.push({
         path: `/song-list-square/${songList.id}`
       })
-        this.setSongList(songList)
+      this.setSongList(songList)
     },
     // 获取歌单列表
     _getSongList(cat, limit, updateTime, offset,load) {
@@ -97,7 +97,7 @@ export default {
     createData(res) {
       let playlists = res.data.playlists
       playlists.forEach(item => {
-        let songListItem = ceratSongList(item)
+        let songListItem = createSongList(item)
         this.songList.push(songListItem)
       })
       this.loadingShow = false

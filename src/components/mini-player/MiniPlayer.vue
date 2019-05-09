@@ -5,22 +5,72 @@
       <h2 class="song-name">{{ currentSong.name }}</h2>
       <p class="singer">{{ currentSong.singer }}</p>
     </div>
-    <span class="icon play-icon iconfont">&#xe61a;</span>
+    <span class="icon play-icon iconfont" @click="playToggle" v-html="playIcon"></span>
     <span class="icon play-list iconfont">&#xe61b;</span>
+    <audio :src="currentSong.songUrl" ref="audio"></audio>
   </div>
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapMutations} from 'vuex'
+import {getSongUrl} from 'api/song'
 
 export default {
   name: 'MiniPlayer',
+  data() {
+    return {
+      playIcon: '&#xe61a;'
+    }
+  },
   computed: {
     ...mapGetters([
       'fullScreen',
       'playList',
-      'currentSong'
+      'currentSong',
+      'playing'
     ])
+  },
+  methods: {
+    ...mapMutations({
+      setSongUrl: 'SET_SONGURL',
+      setPlayState: 'SET_PLAYING_STATE'
+    }),
+    _getSongUrl(id) {
+      getSongUrl(id).then(res => {
+        if(res.status === 200 && res.statusText === 'OK') {
+          let url = res.data.data[0].url
+          this.setSongUrl(url)
+        }
+      })
+    },
+    playToggle() {
+      this.setPlayState(!this.playing)
+    }
+  },
+  watch: {
+    currentSong() {
+      console.log(this.currentSong)
+      this._getSongUrl(this.currentSong.id)
+      this.$nextTick(() => {
+        this.$refs.audio.play()
+        console.log(this.playing)
+      })
+    },
+    playing(playState) {
+      console.log(playState)
+      const audio = this.$refs.audio
+      this.$nextTick(() => {
+        if (playState) {
+          console.log(playState)
+          audio.play()
+          this.playIcon = '&#xe619;'
+        } else {
+          console.log(playState)
+          audio.pause()
+          this.playIcon = '&#xe61a;'
+        }
+      })
+    }
   }
 }
 </script>

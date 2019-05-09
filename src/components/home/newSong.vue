@@ -2,14 +2,14 @@
   <div class="new-song">
     <div class="new-song-head">新歌速递</div>
     <div class="new-song-list">
-      <div class="new-song-item" v-for="item of newSong" :key="item.id">
+      <div class="new-song-item" v-for="(item, index) of newSong" :key="item.id" @click="songClick(item, index)">
         <div class="new-song-img">
           <img v-lazy="item.picUrl + '?param=100y100'">
         </div>
         <div class="new-song-info border-bottom">
           <div class="new-song-mes">
             <h3>{{ item.name }}</h3>
-            <p>{{ item.singerMes }}</p>
+            <p>{{ item.singer }} - {{ item.album }}</p>
           </div>
           <div class="play-icon iconfont">&#xe61a;</div>
         </div>
@@ -19,11 +19,33 @@
 </template>
 
 <script>
+import {mapMutations, mapActions} from 'vuex'
+
 export default {
   name: 'Newsong',
   props: {
     newSong: Array
-  }
+  },
+  methods: {
+    ...mapActions([
+      'selectPlay'
+    ]),
+    songClick(item, index) {
+      this.selectItem(item,index)
+      this.$router.push({
+        path: '/player'
+      })
+    },
+    selectItem(item, index) {
+      this.selectPlay({
+        list: this.newSong,
+        index
+      })
+    },
+  },
+  mounted() {
+    console.log(this.newSong)
+  },
 }
 </script>
 

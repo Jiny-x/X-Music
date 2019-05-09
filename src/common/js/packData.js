@@ -7,10 +7,10 @@ export class SongListData {
     this.tracks = tracks
   }
 }
-export function ceratSongList(playlists) { // 包装歌单数据
+export function createSongList(playlists) { // 包装歌单数据
   return new SongListData({
     name: playlists.name,
-    picUrl: playlists.coverImgUrl,
+    picUrl: playlists.coverImgUrl || playlists.picUrl,
     id: playlists.id,
     updateTime: playlists.updateTime,
     tracks: playlists.tracks
@@ -40,7 +40,7 @@ export function createSong(songList) { // 包装歌曲数据
     duration: songList.dt
   })
 }
-function proceSinger(singer) {
+export function proceSinger(singer) {
   let arr = []
   if (!singer) return ''
   singer.forEach(item => {

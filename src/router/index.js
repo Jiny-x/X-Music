@@ -16,7 +16,11 @@ export default new Router({
     {
       path: '/',
       name: 'Home',
-      component: Home
+      component: Home,
+      children: [{
+        path: 'personalized/:id',
+        component: Playlist
+      }]
     },
     {
       path: '/rank',
@@ -54,7 +58,10 @@ export default new Router({
     {
       path: '/player',
       name: 'Player',
-      component: Player
+      component: Player,
+      meta: {
+        keepAlive: false
+      }
     }
   ]
 })

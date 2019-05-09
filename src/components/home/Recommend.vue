@@ -16,27 +16,31 @@
         <loading></loading>
       </div>
     </div>
-    <router-view></router-view>
   </div>
 </template>
 
 <script>
 import Loading from 'base/loading/Loading'
+import {mapMutations} from 'vuex'
 
 export default {
   name: 'Recommend',
   components: {
     Loading
   },
-  methods: {
-    songListClick(songList) {
-      this.$router.push({
-        path: `/song-list-square/${songList.id}`
-      })
-    }
-  },
   props: {
     recommendSongs: Array
+  },
+  methods: {
+    ...mapMutations({
+      setSongList : 'SET_SONGLIST'
+    }),
+    songListClick(songList) {
+      this.$router.push({
+        path: `personalized/${songList.id}`
+      })
+      this.setSongList(songList)
+    }
   }
 }
 </script>

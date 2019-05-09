@@ -10,7 +10,9 @@
           <new-song :newSong="newSong" v-show="this.recommendSongs.length"></new-song>
         </div>
       </scroll>
-      <!-- <router-view></router-view> -->
+      <transition name="playlist">
+        <router-view></router-view>
+      </transition>
     </div>
   </transition>
 </template>
@@ -19,7 +21,6 @@
 import {getBanner} from 'api/banner'
 import {getRecommend} from 'api/recommend'
 import {getRecommendNewSong} from 'api/newSong'
-import {ObjData, getsingerMes} from 'common/js/disposeData'
 import Scroll from 'base/scroll/Scroll'
 import Loading from 'base/loading/Loading'
 import HomeHeader from './Header'
@@ -27,6 +28,7 @@ import Banner from './Banner'
 import Navigation from './Navigation'
 import Recommend from './Recommend'
 import NewSong from './NewSong'
+import {createSongList, SongData, proceSinger} from 'common/js/packData'
 
 export default {
   name: 'Home',
@@ -58,8 +60,12 @@ export default {
     _getRecommend () {
       getRecommend().then((res) => {
         if (res.status === 200 && res.statusText === 'OK') {
-          const data = res.data
-          this.recommendSongs = data.result
+          const data = res.data.result
+          let newData = []
+          data.forEach(item => {
+            newData.push(createSongList(item))
+          })
+          this.recommendSongs = newData
         }
       })
     },
@@ -67,6 +73,7 @@ export default {
       getRecommendNewSong().then((res) => {
         if (res.status === 200 && res.statusText === 'OK') {
           this.newSong = this.songData(res.data.result)
+          console.log(this.newSong)
         }
       })
     },
@@ -74,8 +81,15 @@ export default {
       let resultData = []
       originData.forEach(item => {
         item = item.song
-        let singerMes = getsingerMes(item.album.artists, item.album.name)
-        resultData.push(new ObjData(item.album.name, item.album.picUrl, singerMes, item.id))
+        resultData.push(new SongData({
+          name: item.album.name,
+          id: item.id,
+          singer: proceSinger(item.album.artists),
+          picUrl: item.album.picUrl,
+          album: item.album.name,
+          duration: item.duration
+          })
+        )
       })
       return resultData
     },
@@ -95,6 +109,8 @@ export default {
 </script>
 
 <style lang="stylus">
+  #id
+    position: relative
   .content-wrapper
     position: absolute
     width: 100%
@@ -104,5 +120,12 @@ export default {
   .home-enter-active, .home-leave-active
     transition: all .5s
   .home-enter, .home-leave-to
+    opacity: 0
+  .playlist-enter-active
+    transition: all .5s
+  .playlist-leave-active
+    transition: all .2s
+  .playlist-enter, .playlist-leave-to
+    transform: translateY(100%)
     opacity: 0
 </style>

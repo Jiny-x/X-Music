@@ -18,7 +18,6 @@ export default {
     position: absolute
     top: 0
     left: 0
-    overflow: hidden
     width: 100%
     height: .5rem
     line-height: .5rem

@@ -1,31 +1,32 @@
 <template>
-  <div class="playlist">
-    <div class="top-container">
-      <div class="bg-filter" ref="top"></div>
-      <div class="head">
-        <span @click="back" class="back-icon iconfont">&#xe602;</span>
-        <!-- <h2 class="title">{{songList.name}}</h2> -->
-      </div>
-      <div class="playlist-title">
-        <img class="playlist-img" :src="`${songList.picUrl}?param=120y120`">
-        <h2 class="palylist-name">{{ songList.name }}</h2>
-      </div>
-    </div>
-    <div class="play-bar">播放全部</div>
-    <scroll class="scroll-wrap" :bounce="bounce">
-      <div class="playlist-container">
-        <div class="song-list" v-for="(item, index) of songs" @click="songClick(item, index)" :key="item.id">
-          <span class="num">{{ index + 1 }}</span>
-          <h3 class="song-name">{{ item.name }}</h3>
-          <p class="song-singer">{{ item.singer }} - {{ item.album }}</p>
-          <span class="play-icon iconfont">&#xe61a;</span>
+  <transition name="playlist">
+    <div class="playlist">
+      <div class="top-container">
+        <div class="bg-filter" ref="top"></div>
+        <div class="head">
+          <span @click="back" class="back-icon iconfont">&#xe602;</span>
+        </div>
+        <div class="playlist-title">
+          <img class="playlist-img" :src="`${songList.picUrl}?param=120y120`">
+          <h2 class="palylist-name">{{ songList.name }}</h2>
         </div>
       </div>
-      <div class="loading-wrap" v-show="!songs.length">
-        <loading></loading>
-      </div>
-    </scroll>
-  </div>
+      <div class="play-bar">播放全部</div>
+      <scroll class="scroll-wrap" :bounce="bounce">
+        <div class="playlist-container">
+          <div class="song-list" v-for="(item, index) of songs" @click="songClick(item, index)" :key="item.id">
+            <span class="num">{{ index + 1 }}</span>
+            <h3 class="song-name">{{ item.name }}</h3>
+            <p class="song-singer">{{ item.singer }} - {{ item.album }}</p>
+            <span class="play-icon iconfont">&#xe61a;</span>
+          </div>
+        </div>
+        <div class="loading-wrap" v-show="!songs.length">
+          <loading></loading>
+        </div>
+      </scroll>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -36,6 +37,7 @@ import {getSongListDetail} from 'api/songList'
 import {createSong} from 'common/js/packData'
 
 export default {
+  name: 'Playlist',
   data() {
     return{
       songs: [],
@@ -83,21 +85,23 @@ export default {
       }
       getSongListDetail(this.songList.id).then(res => {
         if(res.status === 200 && res.statusText === 'OK') {
+          console.log(res)
           let tracks = res.data.playlist.tracks
           let newSongList = []
           tracks.forEach(item => {
             newSongList.push(createSong(item))
           })
           this.songs = newSongList
-          console.log(this.songs)
         }
       })
     }
   },
   created() {
+    console.log('created')
     this._getSongListDetail()
   },
   mounted() {
+    console.log('mounted')
     this.setBgImage()
   }
 }
@@ -106,7 +110,13 @@ export default {
 <style lang="stylus" scoped>
   @import '~common/styles/variable'
   @import '~common/styles/mixin'
-
+  .playlist-enter-active
+    transition: all .5s
+  .playlist-leave-active
+    transition: all .2s
+  .playlist-enter, .playlist-leave-to
+    transform: translateY(100%)
+    opacity: 0
   .playlist
     position: absolute
     top: 0
@@ -114,6 +124,7 @@ export default {
     right: 0
     bottom: 0
     background: #000000
+    z-index: 10
     .head
       position: relative
       width: 100%

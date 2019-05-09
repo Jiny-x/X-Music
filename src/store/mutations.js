@@ -4,6 +4,9 @@ const mutations = {
   [types.SET_SONGLIST] (state, songList) {
     state.songList = songList
   },
+  [types.SET_SONGURL] (state, url) {
+    state.playList[state.currentIndex].songUrl = url
+  },
   [types.SET_PLAYING_STATE] (state, flag) {
     state.playing = flag
   },
