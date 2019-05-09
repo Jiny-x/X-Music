@@ -18,6 +18,7 @@ export default {
   position: relative
   width: 40px
   height: 40px
+  margin: 0 auto
 
 .loader > div
   -webkit-animation-fill-mode: both

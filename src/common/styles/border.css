@@ -75,14 +75,14 @@
 .border-topbottom::before,
 .border-topleft::before,
 .border-topright::before {
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid rgba(61,159,208,0.4);
     transform-origin: 0 0;
 }
 .border-right::before,
 .border-rightbottom::before,
 .border-rightleft::before,
 .border-topright::after {
-    border-right: 1px solid #e0e0e0;
+    border-right: 1px solid rgba(61,159,208,0.4);
     transform-origin: 100% 0;
 }
 .border-bottom::before,
@@ -96,7 +96,7 @@
 .border-topleft::after,
 .border-rightleft::after,
 .border-bottomleft::after {
-    border-left: 1px solid #e0e0e0;
+    border-left: 1px solid rgba(61,159,208,0.4);
     transform-origin: 0 0;
 }
 .border-top::before,

@@ -1,41 +1,45 @@
 <template>
-  <div id="rank">
-    <div class="head">
-      <router-link to="/" tag="span" class="back-icon iconfont">&#xe602;</router-link><h2 class="title">未知榜单</h2>
-    </div>
-    <scroll class="content-wrapper">
-      <div class="rank-container recommend-rank">
-        <div class="rank-title">推荐榜</div>
-        <div class="rank-item-wrap">
-          <div class="rank-item"
-            v-for="item of recommendRank"
+  <transition name="col-fade">
+    <div id="rank">
+      <div class="head">
+        <router-link to="/" tag="span" class="back-icon iconfont">&#xe602;</router-link><h2 class="title">未知榜单</h2>
+      </div>
+      <scroll class="content-wrapper">
+        <div class="rank-container recommend-rank">
+          <div class="rank-title">推荐榜</div>
+          <div class="rank-item-wrap">
+            <div class="rank-item"
+              v-for="item of recommendRank"
+              :key="item.id"
+              @click="rankItemClick(item)"
+              >
+              <img class="rank-img" v-lazy="item.picUrl + '?param=200y200'">
+              <div class="item-song-wrap">
+                <p class="item-song" v-for="(track,index) of item.lessTrack" :key="index">{{ track }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="rank-title" v-show="this.recommendRank.length">个性榜</div>
+          <div class="rank-item-wrap indivi-rank">
+            <div class="indivi-rank-item"
+            v-for="item of indiviRank"
             :key="item.id"
             @click="rankItemClick(item)"
             >
-            <img class="rank-img" v-lazy="item.picUrl + '?param=200y200'">
-            <div class="item-song-wrap">
-              <p class="item-song" v-for="(track,index) of item.lessTrack" :key="index">{{ track }}</p>
+              <img class="rank-img" v-lazy="item.picUrl + '?param=100y100'">
+              <p class="rank-name">{{ item.name }}</p>
             </div>
           </div>
         </div>
-        <div class="rank-title" v-show="this.recommendRank.length">个性榜</div>
-        <div class="rank-item-wrap indivi-rank">
-          <div class="indivi-rank-item"
-           v-for="item of indiviRank"
-          :key="item.id"
-          @click="rankItemClick(item)"
-          >
-            <img class="rank-img" v-lazy="item.picUrl + '?param=100y100'">
-            <p class="rank-name">{{ item.name }}</p>
-          </div>
-        </div>
+      </scroll>
+      <div class="loading-container" v-show="!this.recommendRank.length">
+        <loading></loading>
       </div>
-    </scroll>
-    <div class="loading-container" v-show="!this.recommendRank.length">
-      <loading></loading>
+      <transition name="playlist">
+        <router-view></router-view>
+      </transition>
     </div>
-    <router-view></router-view>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -118,70 +122,85 @@ export default {
 <style lang="stylus" scoped>
   @import '~common/styles/variable'
   @import '~common/styles/mixin'
-  .head
+  .col-fade-enter-active, .col-fade-leave-active
+    transition: all .5s
+  .col-fade-enter, .col-fade-leave-to
+    transform: translateY(100%)
+    opacity: 0
+  #rank
     position: relative
-    width: 100%
-    height: .5rem
-    .back-icon
-      position: absolute
-      top: 50%
-      left: .1rem
-      transform: translateY(-50%)
-      font-size: $font-size-large
-      font-weight: bold
-      vertical-align: middle
-    .title
-      display: inline-block
+    height: 100%
+    .head
+      position: relative
       width: 100%
-      text-align: center
-      font-size: $font-size-large
+      height: .5rem
+      .back-icon
+        position: absolute
+        top: 50%
+        left: .1rem
+        transform: translateY(-50%)
+        font-size: $font-size-large
+        font-weight: bold
+        vertical-align: middle
+      .title
+        display: inline-block
+        width: 100%
+        text-align: center
+        font-size: $font-size-large
+        line-height: .5rem
+        vertical-align: middle
+    .content-wrapper
+      position: absolute
+      width: 100%
+      top: .5rem
+      bottom: 0
+      overflow: hidden
+    .rank-title
+      margin-left: .2rem
       line-height: .5rem
-      vertical-align: middle
-  .content-wrapper
-    position: absolute
-    width: 100%
-    top: .5rem
-    bottom: 0
-    overflow: hidden
-  .rank-title
-    margin-left: .2rem
-    line-height: .5rem
-  .rank-item
-    overflow: hidden
-    height: .9rem
-    margin: 0 .1rem .2rem
-    .rank-img
-      float: left
-      width: .9rem
-      border-radius: .1rem
-    .item-song-wrap
+    .rank-item
+      overflow: hidden
       height: .9rem
-      width: 62%
-      margin-left: 1.05rem
-      line-height: .3rem
-      .item-song
-        font-size: $font-size-small
-        no-wrap()
-  .indivi-rank
-    overflow: hidden
-    display: flex
-    flex-wrap: wrap
-    justify-content: space-around
-    margin: .1rem
-    .indivi-rank-item
-      width: 30%
-      margin: 0 0 .1rem
+      margin: 0 .1rem .2rem
       .rank-img
+        float: left
         width: .9rem
         border-radius: .1rem
-      .rank-name
-        padding: .05rem 0
-        line-height: .2rem
-        font-size: $font-size-medium
-        no-wrap-two()
-.loading-container
-    position: absolute
-    left: 50%
-    top: 30%
-    transform: translateX(-50%)
+      .item-song-wrap
+        height: .9rem
+        width: 62%
+        margin-left: 1.05rem
+        line-height: .3rem
+        .item-song
+          font-size: $font-size-small
+          no-wrap()
+    .indivi-rank
+      overflow: hidden
+      display: flex
+      flex-wrap: wrap
+      justify-content: space-around
+      margin: .1rem
+      .indivi-rank-item
+        width: 30%
+        margin: 0 0 .1rem
+        .rank-img
+          width: .9rem
+          border-radius: .1rem
+        .rank-name
+          padding: .05rem 0
+          line-height: .2rem
+          font-size: $font-size-medium
+          no-wrap-two()
+  .loading-container
+      position: fixed
+      left: 50%
+      top: 30%
+      transform: translateX(-50%)
+  .playlist-enter-active
+    transition: all .5s
+  .playlist-leave-active
+    transition: all .2s
+  .playlist-enter, .playlist-leave-to
+    transform: translateY(100%)
+    opacity: 0
 </style>

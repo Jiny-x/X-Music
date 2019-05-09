@@ -1,16 +1,18 @@
 <template>
-  <div id="home">
-    <home-header></home-header>
-    <scroll class="content-wrapper" :data="bannerData" ref="scroll">
-      <div class="content">
-        <banner @imgReady="imgReady" :bannerData="bannerData"></banner>
-        <navigation></navigation>
-        <recommend :recommendSongs="recommendSongs"></recommend>
-        <new-song :newSong="newSong" v-show="this.recommendSongs.length"></new-song>
-      </div>
-    </scroll>
-    <!-- <router-view></router-view> -->
-  </div>
+  <transition name="home" mode="out-in">
+    <div id="home">
+      <home-header></home-header>
+      <scroll class="content-wrapper" :data="bannerData" ref="scroll">
+        <div class="content">
+          <banner @imgReady="imgReady" :bannerData="bannerData"></banner>
+          <navigation></navigation>
+          <recommend :recommendSongs="recommendSongs"></recommend>
+          <new-song :newSong="newSong" v-show="this.recommendSongs.length"></new-song>
+        </div>
+      </scroll>
+      <!-- <router-view></router-view> -->
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -99,4 +101,8 @@ export default {
     top: .5rem
     bottom: 0
     overflow: hidden
+  .home-enter-active, .home-leave-active
+    transition: all .5s
+  .home-enter, .home-leave-to
+    opacity: 0
 </style>

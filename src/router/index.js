@@ -6,10 +6,12 @@ import Search from 'components/search/Search'
 import Singer from 'components/singer/Singer'
 import SongListSquare from 'components/song-list-square/Song-list-square'
 import Playlist from 'components/playlist/Playlist'
+import Player from 'components/player/Player'
 
 Vue.use(Router)
 
 export default new Router({
+  // mode: 'history',
   routes: [
     {
       path: '/',
@@ -48,6 +50,11 @@ export default new Router({
       path: '/playlist',
       name: 'Playlist',
       component: Playlist
+    },
+    {
+      path: '/player',
+      name: 'Player',
+      component: Player
     }
   ]
 })

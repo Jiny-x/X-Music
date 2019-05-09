@@ -14,7 +14,7 @@
     <div class="play-bar">播放全部</div>
     <scroll class="scroll-wrap" :bounce="bounce">
       <div class="playlist-container">
-        <div class="song-list" v-for="(item, index) of songs" :key="item.id">
+        <div class="song-list" v-for="(item, index) of songs" @click="songClick(item, index)" :key="item.id">
           <span class="num">{{ index + 1 }}</span>
           <h3 class="song-name">{{ item.name }}</h3>
           <p class="song-singer">{{ item.singer }} - {{ item.album }}</p>
@@ -31,7 +31,7 @@
 <script>
 import Scroll from 'base/scroll/Scroll'
 import Loading from 'base/loading/Loading'
-import {mapGetters, mapMutations} from 'vuex'
+import {mapGetters, mapMutations, mapActions} from 'vuex'
 import {getSongListDetail} from 'api/songList'
 import {createSong} from 'common/js/packData'
 
@@ -54,6 +54,21 @@ export default {
     ])
   },
   methods: {
+    ...mapActions([
+      'selectPlay'
+    ]),
+    songClick(item, index) {
+      this.selectItem(item,index)
+      this.$router.push({
+        path: '/player'
+      })
+    },
+    selectItem(item, index) {
+      this.selectPlay({
+        list: this.songs,
+        index
+      })
+    },
     back() {
       this.$router.back()
     },
@@ -123,7 +138,7 @@ export default {
         background-size: cover
         background-repeat: no-repeat
         background-position: 50% 15%
-        filter: blur(12px) opacity(80%)
+        filter: blur(12px) brightness(60%)
       .playlist-title
         display: flex
         justify-content: space-around
@@ -159,7 +174,8 @@ export default {
           overflow: hidden
         .song-name
           width: 76%
-          padding: 0 0 .1rem .3rem
+          padding: 0 0 .06rem .3rem
+          line-height: .16rem
           font-size: $font-size-medium
           no-wrap()
         .song-singer

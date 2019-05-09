@@ -3,15 +3,24 @@
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
+    <mini-player></mini-player>
   </div>
 </template>
 
 <script>
+import MiniPlayer from 'components/mini-player/MiniPlayer'
+
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    MiniPlayer
+  }
 }
 </script>
 
-<style>
-
+<style lang="stylus">
+  #app
+    position: relative
+    width: 100%
+    height: 100%
 </style>

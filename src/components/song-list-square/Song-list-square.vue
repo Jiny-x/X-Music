@@ -1,43 +1,44 @@
 <template>
-  <div id="song-list">
-    <div class="head">
-      <router-link to="/" tag="span" class="back-icon iconfont">&#xe602;</router-link><h2 class="title">歌单广场</h2>
-    </div>
-    <div class="nav-bar border-bottom">
-      <a class="nav-item" :class="{'nav-item-active': 0 == activeNum}" @click="_getSongList('精品'), changeActive(0)">精品</a>
-      <a class="nav-item" :class="{'nav-item-active': 1 == activeNum}" @click="_getSongList('欧美'), changeActive(1)">欧美</a>
-      <a class="nav-item" :class="{'nav-item-active': 2 == activeNum}" @click="_getSongList('电子'), changeActive(2)">电子</a>
-      <a class="nav-item" :class="{'nav-item-active': 3 == activeNum}" @click="_getSongList('流行'), changeActive(3)">流行</a>
-      <a class="nav-item" :class="{'nav-item-active': 4 == activeNum}" @click="_getSongList('华语'), changeActive(4)">华语</a>
-      <a class="nav-item" :class="{'nav-item-active': 5 == activeNum}" @click="_getSongList('舞曲'), changeActive(5)">舞曲</a>
-    </div>
-    <scroll class="content-wrapper" ref="scroll"
-      :data="songList"
-      :pullup="pullup"
-       @scrollToEnd="loadData"
-       >
-      <div class="song-list-container">
-        <div class="song-list-wrap"
-          v-for="item of songList"
-          :key="item.id"
-          ref="listItem"
-          @click="songListClick(item)"
-        >
-          <div class="song-list-img-wrap">
-            <img v-lazy="item.picUrl + '?param=200y200'">
-          </div>
-          <h3>{{item.name}}</h3>
-        </div>
-        <div class="loading-container-end" v-show="!loadingShow">
-          <loading></loading>
-        </div>
+  <transition name="col-fade" mode="out-in">
+    <div id="song-list">
+      <div class="head">
+        <router-link to="/" tag="span" class="back-icon iconfont">&#xe602;</router-link><h2 class="title">歌单广场</h2>
       </div>
-    </scroll>
-    <div class="loading-container" v-show="loadingShow">
-      <loading></loading>
+      <div class="nav-bar border-bottom">
+        <a class="nav-item" :class="{'nav-item-active': 0 == activeNum}" @click="_getSongList('精品'), changeActive(0)">精品</a>
+        <a class="nav-item" :class="{'nav-item-active': 1 == activeNum}" @click="_getSongList('欧美'), changeActive(1)">欧美</a>
+        <a class="nav-item" :class="{'nav-item-active': 2 == activeNum}" @click="_getSongList('电子'), changeActive(2)">电子</a>
+        <a class="nav-item" :class="{'nav-item-active': 3 == activeNum}" @click="_getSongList('流行'), changeActive(3)">流行</a>
+        <a class="nav-item" :class="{'nav-item-active': 4 == activeNum}" @click="_getSongList('华语'), changeActive(4)">华语</a>
+        <a class="nav-item" :class="{'nav-item-active': 5 == activeNum}" @click="_getSongList('舞曲'), changeActive(5)">舞曲</a>
+      </div>
+        <scroll class="content-wrapper" ref="scroll"
+          :data="songList"
+          :pullup="pullup"
+          @scrollToEnd="loadData"
+          >
+          <transition-group tag="div" name="list" class="song-list-container">
+            <div class="song-list-wrap"
+              v-for="(item,index) of songList"
+              :key="index"
+              ref="listItem"
+              @click="songListClick(item)"
+            >
+              <div class="song-list-img-wrap">
+                <img v-lazy="item.picUrl + '?param=200y200'">
+              </div>
+              <h3>{{item.name}}</h3>
+            </div>
+            <div class="loading-container-end" key="load">
+              <loading></loading>
+            </div>
+          </transition-group>
+        </scroll>
+      <transition name="playlist">
+        <router-view></router-view>
+      </transition>
     </div>
-    <router-view></router-view>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -135,6 +136,9 @@ export default {
 <style lang="stylus" scoped>
   @import '~common/styles/variable'
   @import '~common/styles/mixin'
+  #song-list
+    position: relative
+    height: 100%
   .head
     position: relative
     width: 100%
@@ -201,11 +205,28 @@ export default {
           font-size: $font-size-medium
           no-wrap-two()
     .loading-container-end
-      margin: .05rem auto
+      width: 100%
+      margin-top: .2rem
   .loading-container
     position: fixed
     left: 50%
     top: 40%
     transform: translateX(-50%)
 
+  .col-fade-enter-active, .col-fade-leave-active
+    transition: all .5s
+  .col-fade-enter, .col-fade-leave-to
+    transform: translateY(100%)
+    opacity: 0
+  .playlist-enter-active
+    transition: all .5s
+  .playlist-leave-active
+    transition: all .2s
+  .playlist-enter, .playlist-leave-to
+    transform: translateY(100%)
+    opacity: 0
+  .list-enter-active
+    transition: all .2s
+  .list-enter
+    transform: translateX(50%)
 </style>
