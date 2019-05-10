@@ -7,7 +7,14 @@
     </div>
     <span class="icon play-icon iconfont" @click="playToggle" v-html="playIcon"></span>
     <span class="icon play-list iconfont">&#xe61b;</span>
-    <audio :src="currentSong.songUrl" ref="audio"></audio>
+    <audio :src="currentSong.songUrl" ref="audio" 
+      @canplay="canplay"
+      @playing="songPlaying"
+      @ended="next"
+      @error="error"
+      @loadeddata="loadeddata"
+      @loadedmetadata="loadedmetadata"
+    ></audio>
   </div>
 </template>
 
@@ -27,13 +34,17 @@ export default {
       'fullScreen',
       'playList',
       'currentSong',
-      'playing'
+      'playing',
+      'currentIndex',
+      'canplayState'
     ])
   },
   methods: {
     ...mapMutations({
       setSongUrl: 'SET_SONGURL',
-      setPlayState: 'SET_PLAYING_STATE'
+      setPlayState: 'SET_PLAYING_STATE',
+      setCurrentIndex: 'SET_CURRENT_INDEX',
+      setCanPlay: 'SET_CANPLAY'
     }),
     _getSongUrl(id) {
       getSongUrl(id).then(res => {
@@ -45,6 +56,28 @@ export default {
     },
     playToggle() {
       this.setPlayState(!this.playing)
+    },
+    canplay() {
+      console.log('canplay')
+      this.setCanPlay(true)
+      this.$refs.audio.play()
+    },
+    error() {
+      this.setCanPlay(true)
+    },
+    next() {
+      let index = this.currentIndex
+      index = index === this.playList.length - 1  ? 0 : ++index
+      this.setCurrentIndex(index)
+    },
+    songPlaying() {
+      console.log('playing')
+    },
+    loadeddata() {
+      console.log('loadeddata')
+    },
+    loadedmetadata() {
+      console.log('loadedmetadata')
     }
   },
   watch: {

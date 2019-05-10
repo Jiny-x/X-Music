@@ -22,6 +22,9 @@ const mutations = {
   [types.SET_PLAY_MODE] (state, mode) {
     state.mode = mode
   },
+  [types.SET_CANPLAY] (state, flag) {
+    state.canplayState = flag
+  },
   [types.SET_CURRENT_INDEX] (state, index) {
     state.currentIndex = index
   }

@@ -79,20 +79,12 @@ export default {
       arr.map((item, index) => {
         getRankList(item).then(res => {
           if (res.status === 200 && res.statusText === 'OK') {
-            console.log(res.data)
-            
             resData.push(res.data)
-            // console.log(res)
             count++
             if (count === arr.length) {
-              console.log(resData)
               resData.forEach(item => {
-                console.log(item)
                 newData.push(createSongList(item.playlist))
-                console.log(newData)
               })
-              console.log(newData)
-              // console.log(newData)
               for (let i = 0; i < 5; i++) {
                 let item = newData[i]
                 let lessTrack = []
@@ -100,13 +92,9 @@ export default {
                   lessTrack.push(item.tracks[i].name + ' - ' + item.tracks[i].ar[0].name)
                 }
                 item.lessTrack = lessTrack
-                // console.log(item)
               }
               count = 0
               chosen ? this.recommendRank = newData : this.indiviRank = newData
-              console.log(this.recommendRank)
-              console.log(this.indiviRank)
-              // console.log(newData)
             }
           }
         })

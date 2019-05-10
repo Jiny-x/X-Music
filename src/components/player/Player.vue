@@ -22,14 +22,13 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex'
-  import {mapMutations} from 'vuex'
+  import {mapGetters, mapMutations} from 'vuex'
 
 export default {
   name: 'Player',
   data() {
     return {
-      playIcon: '&#xe61a;'
+      playIcon: '&#xe61a;',
     }
   },
   computed: {
@@ -41,19 +40,32 @@ export default {
       'playList',
       'currentSong',
       'playing',
-      'currentIndex'
+      'currentIndex',
+      'canplayState'
     ])
   },
   methods: {
     ...mapMutations({
       setFullScreen: 'SET_FULL_SCREEN',
-      setPlayState: 'SET_PLAYING_STATE'
+      setPlayState: 'SET_PLAYING_STATE',
+      setCurrentIndex: 'SET_CURRENT_INDEX',
+      setCanPlay: 'SET_CANPLAY'
     }),
     prev() {
-
+      if (!this.canplayState) return
+      let index = this.currentIndex
+      index = index === 0  ? this.playList.length - 1 : --index
+      this.setCurrentIndex(index)
+      if(!this.playing) this.playToggle()
+      this.setCanPlay(false)
     },
     next() {
-
+      if (!this.canplayState) return
+      let index = this.currentIndex
+      index = index === this.playList.length - 1  ? 0 : ++index
+      this.setCurrentIndex(index)
+      if(!this.playing) this.playToggle()
+      this.setCanPlay(false)
     },
     playToggle() {
       this.setPlayState(!this.playing)
