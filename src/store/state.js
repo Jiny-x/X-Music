@@ -1,4 +1,5 @@
 import {playMode} from 'common/js/config'
+
 const state = {
   songList: {},
   playing: false,
@@ -6,8 +7,7 @@ const state = {
   playList: [],
   sequenceList: [],
   mode: playMode.sequence,
-  currentIndex: -1,
-  canplayState: false
+  currentIndex: -1
 }
 
 export default state

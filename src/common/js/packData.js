@@ -18,7 +18,7 @@ export function createSongList(playlists) { // 包装歌单数据
 }
 
 export class SongData {
-  constructor({name, id, singer, songUrl, picUrl, album, duration}) {
+  constructor({name, id, singer, songUrl, picUrl, album, duration, lyric}) {
     this.name = name
     this.id = id
     this.singer = singer
@@ -26,6 +26,7 @@ export class SongData {
     this.picUrl = picUrl
     this.album = album
     this.duration = duration
+    this.lyric = lyric
   }
 }
 
@@ -35,9 +36,10 @@ export function createSong(songList) { // 包装歌曲数据
     id: songList.id,
     singer: proceSinger(songList.ar),
     picUrl: songList.al.picUrl,
-    songUrl: songList.url,
+    songUrl: null,
     album: songList.al.name,
-    duration: songList.dt
+    duration: songList.dt,
+    lyric: null
   })
 }
 export function proceSinger(singer) {

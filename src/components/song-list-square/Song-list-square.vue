@@ -43,8 +43,8 @@
 
 <script>
 import Scroll from 'base/scroll/Scroll'
-import {getSongList, getHighQuality, getSongListDetail} from 'api/songList'
-import {SongListData, createSongList} from 'common/js/packData'
+import {getSongList, getHighQuality} from 'api/songList'
+import {createSongList} from 'common/js/packData'
 import Loading from 'base/loading/Loading'
 import {mapMutations} from 'vuex'
 
@@ -76,7 +76,7 @@ export default {
       this.setSongList(songList)
     },
     // 获取歌单列表
-    _getSongList(cat, limit, updateTime, offset,load) {
+    _getSongList(cat, limit, updateTime, offset, load) {
       this.cat = cat
       if (!load) this.loadingShow = true
       if (!updateTime) this.songList = []
@@ -87,11 +87,11 @@ export default {
           }
         })
       } else {
-          getSongList(cat, limit, updateTime, offset).then(res => {
-            if (res.status === 200 && res.statusText === 'OK') {
-              this.createData(res)
-            }
-          })
+        getSongList(cat, limit, updateTime, offset).then(res => {
+          if (res.status === 200 && res.statusText === 'OK') {
+            this.createData(res)
+          }
+        })
       }
     },
     createData(res) {
@@ -206,12 +206,8 @@ export default {
           no-wrap-two()
     .loading-container-end
       width: 100%
-      margin-top: .2rem
-  .loading-container
-    position: fixed
-    left: 50%
-    top: 40%
-    transform: translateX(-50%)
+      margin-top: .3rem
+      padding-bottom: .5rem
 
   .col-fade-enter-active, .col-fade-leave-active
     transition: all .5s

@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setSongList : 'SET_SONGLIST'
+      setSongList: 'SET_SONGLIST'
     }),
     songListClick(songList) {
       this.$router.push({

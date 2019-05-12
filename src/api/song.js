@@ -5,3 +5,7 @@ export function getSongUrl(id) {
   console.log(url)
   return axios(url)
 }
+export function getSongLyric(id) {
+  let url = 'api/lyric?id=' + id
+  return axios(url)
+}

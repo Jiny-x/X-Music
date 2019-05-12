@@ -11,8 +11,8 @@
           <h2 class="palylist-name">{{ songList.name }}</h2>
         </div>
       </div>
-      <div class="play-bar">播放全部</div>
-      <scroll class="scroll-wrap" :bounce="bounce">
+      <div class="play-bar" @click="allClick">播放全部</div>
+      <scroll class="scroll-wrap" :data="songs" ref="playlist">
         <div class="playlist-container">
           <div class="song-list" v-for="(item, index) of songs" @click="songClick(item, index)" :key="item.id">
             <span class="num">{{ index + 1 }}</span>
@@ -25,6 +25,7 @@
           <loading></loading>
         </div>
       </scroll>
+      <!-- <router-view></router-view> -->
     </div>
   </transition>
 </template>
@@ -32,18 +33,17 @@
 <script>
 import Scroll from 'base/scroll/Scroll'
 import Loading from 'base/loading/Loading'
-import {mapGetters, mapMutations, mapActions} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 import {getSongListDetail} from 'api/songList'
 import {createSong} from 'common/js/packData'
+import {listMixin} from 'common/js/mixin'
 
 export default {
+  mixins: [listMixin],
   name: 'Playlist',
   data() {
-    return{
-      songs: [],
-      bounce: {
-        top: false
-      }
+    return {
+      songs: []
     }
   },
   components: {
@@ -57,13 +57,16 @@ export default {
   },
   methods: {
     ...mapActions([
-      'selectPlay'
+      'selectPlay',
+      'allPlay'
     ]),
-    songClick(item, index) {
-      this.selectItem(item,index)
-      this.$router.push({
-        path: '/player'
+    allClick() {
+      this.allPlay({
+        list: this.songs
       })
+    },
+    songClick(item, index) {
+      this.selectItem(item, index)
     },
     selectItem(item, index) {
       this.selectPlay({
@@ -84,8 +87,7 @@ export default {
         })
       }
       getSongListDetail(this.songList.id).then(res => {
-        if(res.status === 200 && res.statusText === 'OK') {
-          console.log(res)
+        if (res.status === 200 && res.statusText === 'OK') {
           let tracks = res.data.playlist.tracks
           let newSongList = []
           tracks.forEach(item => {
@@ -95,6 +97,11 @@ export default {
         }
       })
     }
+  },
+  list(playList) {
+    const bottom = playList.length > 0 ? '60px' : ''
+    this.$refs.playlist.$el.style['bottom'] = bottom
+    this.$refs.playlist.refresh()
   },
   created() {
     console.log('created')
@@ -173,9 +180,11 @@ export default {
       border: 1px solid $color-theme
       font-size: $font-size-medium
     .scroll-wrap
-      position: relative
+      position: absolute
       overflow: hidden
-      height: 100%
+      top: 2.5rem
+      bottom: 0
+      width: 100%
       border-radius: .2rem
       .playlist-container
         width: 100%
@@ -200,7 +209,7 @@ export default {
           top: 50%
           transform: translateY(-50%)
         .play-icon
-          position: absolute 
+          position: absolute
           top: 50%
           right: 3%
           transform: translateY(-50%)

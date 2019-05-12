@@ -64,11 +64,11 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setSongList : 'SET_SONGLIST'
+      setSongList: 'SET_SONGLIST'
     }),
     _getRankList() {
       let recommendIdx = [0, 1, 2, 3, 4]
-      let indiviIdx = [17, 8, 10, 7, 6, 21, 15, 18, 22, 5, 9, 19]
+      let indiviIdx = [17, 8, 19, 7, 6, 21, 15, 18, 22, 5, 9, 10]
       this.mapRequet(recommendIdx, true)
       this.mapRequet(indiviIdx)
     },

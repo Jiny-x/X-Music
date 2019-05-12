@@ -7,6 +7,9 @@ const mutations = {
   [types.SET_SONGURL] (state, url) {
     state.playList[state.currentIndex].songUrl = url
   },
+  [types.SET_SONGLYRIC] (state, lyric) {
+    state.playList[state.currentIndex].lyric = lyric
+  },
   [types.SET_PLAYING_STATE] (state, flag) {
     state.playing = flag
   },
@@ -21,9 +24,6 @@ const mutations = {
   },
   [types.SET_PLAY_MODE] (state, mode) {
     state.mode = mode
-  },
-  [types.SET_CANPLAY] (state, flag) {
-    state.canplayState = flag
   },
   [types.SET_CURRENT_INDEX] (state, index) {
     state.currentIndex = index

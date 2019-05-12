@@ -88,7 +88,7 @@ export default {
           picUrl: item.album.picUrl,
           album: item.album.name,
           duration: item.duration
-          })
+        })
         )
       })
       return resultData

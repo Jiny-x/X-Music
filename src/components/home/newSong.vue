@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import {mapMutations, mapActions} from 'vuex'
+import {mapActions} from 'vuex'
 
 export default {
   name: 'Newsong',
@@ -31,27 +31,26 @@ export default {
       'selectPlay'
     ]),
     songClick(item, index) {
-      this.selectItem(item,index)
-      this.$router.push({
-        path: '/player'
-      })
+      this.selectItem(item, index)
     },
     selectItem(item, index) {
       this.selectPlay({
         list: this.newSong,
         index
       })
-    },
+    }
   },
   mounted() {
     console.log(this.newSong)
-  },
+  }
 }
 </script>
 
 <style lang="stylus" scoped>
   @import '~common/styles/variable.styl';
   @import '~common/styles/mixin.styl'
+  .new-song
+    padding-bottom: .5rem
   .new-song-head
     padding: .18rem .1rem
     font-weight: bold
@@ -90,9 +89,4 @@ export default {
         display: inline-block
         line-height: .5rem
         font-size: $font-size-large-x
-    .loading-conteiner
-      position: absolute
-      top: 50%
-      left: 50%
-      transform: translateX(-50%)
 </style>

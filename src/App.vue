@@ -3,17 +3,17 @@
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
-    <mini-player></mini-player>
+    <player></player>
   </div>
 </template>
 
 <script>
-import MiniPlayer from 'components/mini-player/MiniPlayer'
+import Player from 'components/player/Player'
 
 export default {
   name: 'App',
   components: {
-    MiniPlayer
+    Player
   }
 }
 </script>
