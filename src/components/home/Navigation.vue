@@ -8,10 +8,10 @@
       <div class="nav-icon iconfont">&#xe648;</div>
       <h3>排行榜</h3>
     </router-link>
-    <router-link to="/singer" tag="div" class="nav-icon-wrap iconfont">
+    <!-- <router-link to="/singer" tag="div" class="nav-icon-wrap iconfont">
       <div class="nav-icon iconfont">&#xe933;</div>
       <h3>歌手</h3>
-    </router-link>
+    </router-link> -->
   </div>
 </template>
 
@@ -28,7 +28,8 @@ export default {
     justify-content: space-around
     align-items: center
     width: 100%
-    margin-top: .1rem
+    margin-top: .2rem
+    padding-bottom: .1rem
     text-align: center
     .nav-icon
       display: inline-block

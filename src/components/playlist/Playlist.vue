@@ -25,7 +25,6 @@
           <loading></loading>
         </div>
       </scroll>
-      <!-- <router-view></router-view> -->
     </div>
   </transition>
 </template>
@@ -36,10 +35,8 @@ import Loading from 'base/loading/Loading'
 import {mapGetters, mapActions} from 'vuex'
 import {getSongListDetail} from 'api/songList'
 import {createSong} from 'common/js/packData'
-import {listMixin} from 'common/js/mixin'
 
 export default {
-  mixins: [listMixin],
   name: 'Playlist',
   data() {
     return {
@@ -52,7 +49,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'songList'
+      'songList',
+      'playList'
     ])
   },
   methods: {
@@ -97,11 +95,6 @@ export default {
         }
       })
     }
-  },
-  list(playList) {
-    const bottom = playList.length > 0 ? '60px' : ''
-    this.$refs.playlist.$el.style['bottom'] = bottom
-    this.$refs.playlist.refresh()
   },
   created() {
     console.log('created')
@@ -175,7 +168,8 @@ export default {
       display: inline-block
       margin: 0 0 .1rem 50%
       transform: translateX(-50%)
-      padding: .08rem .2rem
+      padding: 0 .2rem
+      line-height: .32rem
       border-radius: .2rem
       border: 1px solid $color-theme
       font-size: $font-size-medium
@@ -188,6 +182,7 @@ export default {
       border-radius: .2rem
       .playlist-container
         width: 100%
+        padding-bottom: .5rem
         .song-list
           position: relative
           margin: .2rem

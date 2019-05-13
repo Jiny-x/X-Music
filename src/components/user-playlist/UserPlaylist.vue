@@ -9,11 +9,11 @@
           @scrollToTop="close"
           :pulldown="pulldown">
           <div class="playlist-container">
-            <div class="song" v-for="(item, index) of sequenceList" ref="song">
+            <div class="song" v-for="(item, index) of sequenceList" ref="song" :key="item.id">
               <div class="song-name" @click="songClick(item, index)">
                 <em class="play-icon iconfont" v-show="playingIcon(item)">&#xe620;</em>
-                <h3 class="name">{{ item.name }}</h3>
-                <p class="singer">{{ ' - ' + item.singer }}</p>
+                <h3 class="name" :class="{'name-active': item.id === currentSong.id}">{{ item.name }}</h3>
+                <p class="singer" :class="{'singer-active': item.id === currentSong.id}">{{ ' - ' + item.singer }}</p>
               </div>
               <em class="delete iconfont" @click.stop="deleteItem(item)">&#xe662;</em>
             </div>
@@ -66,7 +66,7 @@ export default {
       this.hidden()
     },
     playingIcon(item) {
-      return item.id === this.currentSong.id ? true : false
+      return item.id === this.currentSong.id ? 1 : 0
     },
     show() {
       console.log(this.currentSong)
@@ -86,7 +86,7 @@ export default {
   },
   watch: {
     currentSong(newSong, oldSong) {
-      if (!this.showState || newSong.id === oldSong.id) return;
+      if (!this.showState || newSong.id === oldSong.id) { return }
       this.scrollToCurrent(newSong)
     }
   }
@@ -141,8 +141,11 @@ export default {
           .name
             display: inline-block
             line-height: .5rem
+            color: $color-text-d
             font-size: $font-size-medium-x
             no-wrap()
+            &.name-active
+              color: $color-theme
           .singer
             display: inline-block
             color: $color-text-dd
@@ -150,6 +153,8 @@ export default {
             padding-bottom: .17rem
             font-size: $font-size-small
             no-wrap()
+            &.singer-active
+              color: $color-text-d
         .delete
           padding-right: .2rem
           line-height: .5rem
@@ -160,4 +165,3 @@ export default {
       transform: translateY(100%)
       opacity: 0
 </style>
-

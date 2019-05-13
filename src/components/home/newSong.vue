@@ -39,9 +39,6 @@ export default {
         index
       })
     }
-  },
-  mounted() {
-    console.log(this.newSong)
   }
 }
 </script>
@@ -49,8 +46,6 @@ export default {
 <style lang="stylus" scoped>
   @import '~common/styles/variable.styl';
   @import '~common/styles/mixin.styl'
-  .new-song
-    padding-bottom: .5rem
   .new-song-head
     padding: .18rem .1rem
     font-weight: bold

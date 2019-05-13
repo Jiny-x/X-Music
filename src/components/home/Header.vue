@@ -1,8 +1,8 @@
 <template>
   <div class="home-header">
     <div class="logo"></div>
-    <div class="person iconfont">&#xe64f;</div>
-    <router-link to="/search" tag="div" class="search"><span class="search-icon iconfont">&#xe659;</span>专辑/歌单/歌名</router-link>
+    <!-- <div class="person iconfont">&#xe64f;</div>
+    <router-link to="/search" tag="div" class="search"><span class="search-icon iconfont">&#xe659;</span>专辑/歌单/歌名</router-link> -->
   </div>
 </template>
 
@@ -23,9 +23,9 @@ export default {
     line-height: .5rem
     background: $color-background-them
   .logo
-    float: left
     width: 1.3rem
     height: .5rem
+    margin: 0 auto
     background-image: url('~common/image/logo.png')
     background-size: auto .25rem
     background-repeat: no-repeat

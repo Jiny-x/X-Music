@@ -36,12 +36,18 @@ export default {
 <style lang="stylus" scoped>
   @import '~common/styles/variable.styl'
   .banner >>>.swiper-pagination-bullet-active
+    width: .2rem
+    border-radius: .04rem
+    opacity: 0.8
     background: $color-theme
   .banner
     position: relative
     width: 100%
     height: 0
     padding-bottom: 37.18%
+    .swiper-container
+      margin: 0 .1rem
+      border-radius: .12rem
     .slide
       position: relative
       padding-bottom: 37.18%

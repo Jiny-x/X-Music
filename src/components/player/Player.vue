@@ -1,66 +1,67 @@
 <template>
-  <transition name="col-fade">
-    <div class="player" v-show="playList.length" ref="playBg">
-      <transition name="col-fade">
-        <div class="full-player" v-show="fullScreen">
-          <div class="bg-img" ref="bg"></div>
-          <div class="back-icon iconfont" @click="back">&#xe602;</div>
+  <div class="player" v-show="playerShow" ref="playBg">
+    <transition name="col-fade">
+      <div class="full-player" v-show="fullScreen">
+        <div class="bg-img-wrap" ref="bg">
+          <img :src="`${currentSong.picUrl}?param=300y500`" class="bg-img">
+        </div>
+        <div class="back-icon iconfont" @click="back">&#xe602;</div>
+        <h2 class="song-name">{{ currentSong.name }}</h2>
+        <p class="singer">{{ currentSong.singer }}</p>
+        <div class="song-img-wrap" ref="songImg">
+          <div :class="rotate" class="song-img">
+          <img class="song-pic" :src="`${currentSong.picUrl}?param=300y300`">
+          </div>
+        </div>
+        <div class="lyric-mini-wrap" v-show="!lyricShow"  :class="{'lyric-show': lyricShow}">
+          <div class="lyric-mini">{{ lyricSingle }}</div>
+        </div>
+        <scroll class="lyric" ref="lyr" :data="currentLyric && currentLyric.lines">
+          <div class="lyric-wrap">
+            <div class="text-wrap" @click="lyricFull" :class="{'lyric-show': !lyricShow}">
+              <p class="text" ref="lyricLine"
+                  v-for="(item, index) of currentLyric.lines"
+                  :class="{'current': currentLineNum === index}"
+                  :key="item.id"
+              >{{ item.txt }}</p>
+            </div>
+          </div>
+        </scroll>
+        <div class="progress">
+          <div class="time-l time">{{ currentTime }}</div>
+          <div class="progress-bar-wrap">
+            <progress-bar :widthPercent="widthPercent" @setPercentW="changePercent"></progress-bar>
+          </div>
+          <div class="time-r time">{{ duration }}</div>
+        </div>
+        <div class="control-area">
+          <span class="iconfont" v-html="modeIcon" @click="modeChange"></span>
+          <span class="iconfont" @click="prev">&#xe61f;</span>
+          <span class="play-icon iconfont" @click="playToggle" v-html="playIcon"></span>
+          <span class="iconfont" @click="next">&#xe615;</span>
+          <span class="iconfont" @click="userPlaylistShow">&#xe61b;</span>
+        </div>
+      </div>
+    </transition>
+    <transition name="mini-fade">
+      <div class="mini-player border-top" v-show="!fullScreen && playList.length">
+        <img class="song-img" :src="`${currentSong.picUrl}?param=100y100`">
+        <div class="song-mes" @click="fullPlayer">
           <h2 class="song-name">{{ currentSong.name }}</h2>
           <p class="singer">{{ currentSong.singer }}</p>
-          <div class="song-img-wrap" ref="songImg">
-            <div :class="rotate" class="song-img">
-            <img class="song-pic" :src="`${currentSong.picUrl}?param=300y300`">
-            </div>
-          </div>
-          <div class="lyric-mini-wrap" v-show="!lyricShow"  :class="{'lyric-show': lyricShow}">
-            <div class="lyric-mini">{{ lyricSingle }}</div>
-          </div>
-          <scroll class="lyric" ref="lyr" :data="currentLyric && currentLyric.lines">
-            <div class="lyric-wrap">
-              <div class="text-wrap" @click="lyricFull" :class="{'lyric-show': !lyricShow}">
-                <p class="text" ref="lyricLine"
-                    v-for="(item, index) of currentLyric.lines"
-                    :class="{'current': currentLineNum === index}"
-                >{{ item.txt }}</p>
-              </div>
-            </div>
-          </scroll>
-          <div class="progress">
-            <div class="time-l time">{{ currentTime }}</div>
-            <div class="progress-bar-wrap">
-              <progress-bar :widthPercent="widthPercent" @setPercentW="changePercent"></progress-bar>
-            </div>
-            <div class="time-r time">{{ duration }}</div>
-          </div>
-          <div class="control-area">
-            <span class="iconfont" v-html="modeIcon" @click="modeChange"></span>
-            <span class="iconfont" @click="prev">&#xe61f;</span>
-            <span class="play-icon iconfont" @click="playToggle" v-html="playIcon"></span>
-            <span class="iconfont" @click="next">&#xe615;</span>
-            <span class="iconfont" @click="userPlaylistShow">&#xe61b;</span>
-          </div>
         </div>
-      </transition>
-      <transition name="mini-fade">
-        <div class="mini-player border-top" v-show="!fullScreen && playList.length">
-          <img class="song-img" :src="`${currentSong.picUrl}?param=100y100`">
-          <div class="song-mes" @click="fullPlayer">
-            <h2 class="song-name">{{ currentSong.name }}</h2>
-            <p class="singer">{{ currentSong.singer }}</p>
-          </div>
-          <span class="icon play-icon iconfont" @click="playToggle" v-html="playIcon"></span>
-          <span class="icon play-list iconfont" @click="userPlaylistShow">&#xe61b;</span>
-        </div>
-      </transition>
-      <user-playlist ref="userPl"></user-playlist>
-      <audio :src="currentSong.songUrl" ref="audio"
-        @canplay="canplay"
-        @ended="next"
-        @error="error"
-        @timeupdate="updateTime"
-      ></audio>
-    </div>
-  </transition>
+        <span class="icon play-icon iconfont" @click="playToggle" v-html="playIcon"></span>
+        <span class="icon play-list iconfont" @click="userPlaylistShow">&#xe61b;</span>
+      </div>
+    </transition>
+    <user-playlist ref="userPl"></user-playlist>
+    <audio :src="currentSong.songUrl" ref="audio"
+      @canplay="canplay"
+      @ended="next"
+      @error="error"
+      @timeupdate="updateTime"
+    ></audio>
+  </div>
 </template>
 
 <script>
@@ -82,6 +83,7 @@ export default {
   },
   data() {
     return {
+      playerShow: false,
       canplayState: false,
       playIcon: '&#xe61a;',
       modeIcon: '&#xe61d;',
@@ -89,7 +91,7 @@ export default {
       duration: '00:00',
       widthPercent: 0,
       currentLineNum: 0,
-      currentLyric: {},
+      currentLyric: [],
       lyricShow: false,
       lyricSingle: '',
       userPlaylist: false
@@ -127,7 +129,6 @@ export default {
         if (res.status === 200 && res.statusText === 'OK') {
           let url = res.data.data[0].url
           this.setSongUrl(url)
-          
         }
       })
       getSongLyric(id).then(res => {
@@ -138,9 +139,9 @@ export default {
           }
         }
       }).catch(() => {
-        this.currentLyric = {},
-        this.lyricShow = false,
-        this.lyricSingle =  '',
+        this.currentLyric = []
+        this.lyricShow = false
+        this.lyricSingle = ''
         this.currentLineNum = 0
       })
     },
@@ -148,14 +149,13 @@ export default {
       this.currentLineNum = lineNum
       if (lineNum > 5) {
         let lineMid = this.$refs.lyricLine[lineNum - 5]
-        this.$refs.lyr.scrollToElement(lineMid, 1000)
+        this.$refs.lyr.scrollToElement && this.$refs.lyr.scrollToElement(lineMid, 1000)
       } else {
-        this.$refs.lyr.scrollToElement(this.$refs.lyricLine[0], 1000)
+        this.$refs.lyr.scrollToElement && this.$refs.lyr.scrollToElement(this.$refs.lyricLine[0], 1000)
       }
       this.lyricSingle = txt
     },
     lyricFull() {
-      console.log('lyricfull')
       this.lyricShow = !this.lyricShow
     },
     setDuration() {
@@ -172,21 +172,21 @@ export default {
     error() {
       this.canplayState = true
     },
-    prev() {
-      if (!this.canplayState) return;
-      if (this.playList.length = 1) {
+    prev() { // 上一曲
+      if (!this.canplayState) { return }
+      if (this.playList.length === 1) {
         this.$refs.audio.loop()
       }
       let index = this.currentIndex
       index = index === 0 ? this.playList.length - 1 : --index
       setTimeout(() => {
         this.setCurrentIndex(index)
-      }, 20);
+      }, 20)
       if (!this.playing) this.playToggle()
       this.canplayState = false
     },
-    next() {
-      if (!this.canplayState) return;
+    next() { // 下一曲
+      if (!this.canplayState) { return }
       if (this.playList.length === 1) {
         this.loop()
       }
@@ -206,23 +206,21 @@ export default {
       this.setPlayMode(mode)
       this.mode === playMode.sequence ? this.modeIcon = '&#xe61d;' : this.modeIcon = '&#xe61e;'
       let list = null
-      if (mode == playMode.random) {
+      if (mode === playMode.random) {
         list = shuffle(this.sequenceList)
       } else {
         list = this.sequenceList
       }
       this.saveCurrentSong(list) // 播放模式切换时保证当前播放的歌曲不切换
       this.setPlayList(list)
-      
     },
     saveCurrentSong(list) {
       let index = list.findIndex(item => {
         return this.currentSong.id === item.id
       })
-      console.log(index)
-      this.setCurrentIndex(index) 
+      this.setCurrentIndex(index)
     },
-    playToggle() { //播放开关
+    playToggle() { // 播放开关
       this.setPlayState(!this.playing)
       if (this.currentLyric.togglePlay) {
         this.currentLyric.togglePlay()
@@ -262,30 +260,30 @@ export default {
     },
     _pad(num, n = 2) {
       let len = num.toString().length
-      while(len < n) {
+      while (len < n) {
         num = '0' + num
         len++
       }
       return num
     },
     init() {
-        this.$refs.bg.style['background-image'] = `url(${this.currentSong.picUrl}?param=300y300)`
-        this.playing ? this.playIcon = '&#xe619;' : this.playIcon = '&#xe61a;'
+      this.currentLyric = []
+      this.playing ? this.playIcon = '&#xe619;' : this.playIcon = '&#xe61a;'
     }
   },
   watch: {
     currentSong(newSong, oldSong) {
-      console.log(this.$refs.audio.style.src)
-      if (!newSong.id) return;
-      if (newSong.id == oldSong.id) return;
+      if (!newSong.id) { return }
+      if (newSong.id === oldSong.id) { return }
+      if (this.currentLyric.stop) {
+        this.currentLyric.stop()
+      }
       this._getSongUrl(newSong.id)
+      if (oldSong.songUrl === this.$refs.audio.src) { return }
       this.$nextTick(() => {
         this.init()
         this.$refs.audio.play()
       })
-        if (this.currentLyric.stop) {
-          this.currentLyric.stop()
-        }
       this.setDuration()
     },
     playing(playState) {
@@ -299,6 +297,11 @@ export default {
           audio.pause()
           this.playIcon = '&#xe61a;'
         }
+      })
+    },
+    playList() {
+      this.$nextTick(() => {
+        this.playerShow = true
       })
     }
   },
@@ -322,16 +325,17 @@ export default {
       right: 0
       bottom: 0
       background: #000000
-      .bg-img
+      .bg-img-wrap
         position: absolute
         top: 0
         left: 0
         right: 0
         bottom: 0
-        background-size: cover
-        background-repeat: no-repeat
-        background-position: 50%
         filter: blur(12px) brightness(50%)
+        .bg-img
+          width: 100%
+          height: 100%
+          background-image: url('~common/image/logo-loading.png')
       .back-icon
         position: absolute
         top: 9
@@ -371,6 +375,9 @@ export default {
           border: 2px solid $color-theme
           border-radius: 50%
           transition: opacity 1s
+          background-image: url('~common/image/logo-loading.png')
+          background-repeat: no-repeat
+          background-position: center
           &.lyric-show
             opacity: 0
           &.play
@@ -431,6 +438,7 @@ export default {
           text-align: center
       .control-area
         position: absolute
+        left: 0
         bottom: 0
         width: 100%
         display: flex

@@ -3,7 +3,7 @@
     <div id="home">
       <home-header></home-header>
       <scroll class="content-wrapper" :data="bannerData" ref="scroll">
-        <div class="content">
+        <div class="content" ref="list">
           <banner @imgReady="imgReady" :bannerData="bannerData"></banner>
           <navigation></navigation>
           <recommend :recommendSongs="recommendSongs"></recommend>
@@ -29,8 +29,10 @@ import Navigation from './Navigation'
 import Recommend from './Recommend'
 import NewSong from './NewSong'
 import {createSongList, SongData, proceSinger} from 'common/js/packData'
+import {listMixin} from 'common/js/mixin'
 
 export default {
+  mixins: [listMixin],
   name: 'Home',
   components: {
     HomeHeader,
@@ -73,7 +75,6 @@ export default {
       getRecommendNewSong().then((res) => {
         if (res.status === 200 && res.statusText === 'OK') {
           this.newSong = this.songData(res.data.result)
-          console.log(this.newSong)
         }
       })
     },
@@ -98,6 +99,11 @@ export default {
         this.$refs.scroll.refresh()
         this.checkLoad = true
       }
+    },
+    list(playList) {
+      const bottom = playList.length > 0 ? '.5rem' : ''
+      this.$refs.list.style['padding-bottom'] = bottom
+      this.$refs.scroll.refresh()
     }
   },
   created() {

@@ -17,10 +17,10 @@
           :pullup="pullup"
           @scrollToEnd="loadData"
           >
-          <transition-group tag="div" name="list" class="song-list-container">
+          <transition-group tag="div" name="list" class="song-list-container" ref="slc">
             <div class="song-list-wrap"
-              v-for="(item,index) of songList"
-              :key="index"
+              v-for="item of songList"
+              :key="item.id"
               ref="listItem"
               @click="songListClick(item)"
             >
@@ -47,8 +47,10 @@ import {getSongList, getHighQuality} from 'api/songList'
 import {createSongList} from 'common/js/packData'
 import Loading from 'base/loading/Loading'
 import {mapMutations} from 'vuex'
+import {listMixin} from 'common/js/mixin'
 
 export default {
+  mixins: [listMixin],
   name: 'SongList',
   components: {
     Loading,
@@ -122,6 +124,11 @@ export default {
     },
     loadData() {
       this.waterFall(true)
+    },
+    list(playList) {
+      const bottom = playList.length > 0 ? '.5rem' : ''
+      this.$refs.slc.$el.style['padding-bottom'] = bottom
+      this.$refs.scroll.refresh()
     }
   },
   created() {
@@ -207,7 +214,6 @@ export default {
     .loading-container-end
       width: 100%
       margin-top: .3rem
-      padding-bottom: .5rem
 
   .col-fade-enter-active, .col-fade-leave-active
     transition: all .5s

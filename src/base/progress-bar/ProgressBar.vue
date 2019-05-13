@@ -11,7 +11,7 @@
 <script>
 export default {
   props: {
-    widthPercent:{
+    widthPercent: {
       type: Number,
       default: 0
     }
@@ -35,7 +35,7 @@ export default {
       console.log(this.progressTouch.statrX)
     },
     progressTouchMove(e) {
-      if (this.progressTouch.init === false) return;
+      if (this.progressTouch.init === false) { return }
       let deltaX = e.touches[0].pageX - this.progressTouch.statrX
       this.progressTouch.widthNum = Math.min(Math.max(0, deltaX + this.progressTouch.statrX - this.$refs.pro.offsetLeft), this.$refs.pro.offsetWidth)
       this.$refs.cur.style['width'] = this.progressTouch.widthNum + 'px'

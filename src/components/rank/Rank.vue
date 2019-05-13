@@ -4,8 +4,8 @@
       <div class="head">
         <router-link to="/" tag="span" class="back-icon iconfont">&#xe602;</router-link><h2 class="title">未知榜单</h2>
       </div>
-      <scroll class="content-wrapper">
-        <div class="rank-container recommend-rank">
+      <scroll class="content-wrapper" ref="scroll">
+        <div class="rank-container recommend-rank" ref="ranklist">
           <div class="rank-title">推荐榜</div>
           <div class="rank-item-wrap">
             <div class="rank-item"
@@ -48,8 +48,10 @@ import {createSongList} from 'common/js/packData'
 import Loading from 'base/loading/Loading'
 import Scroll from 'base/scroll/Scroll'
 import {mapMutations} from 'vuex'
+import {listMixin} from 'common/js/mixin'
 
 export default {
+  mixins: [listMixin],
   name: 'Rank',
   components: {
     Loading,
@@ -105,6 +107,11 @@ export default {
         path: `/rank/${rankList.id}`
       })
       this.setSongList(rankList)
+    },
+    list(playList) {
+      const bottom = playList.length > 0 ? '.5rem' : ''
+      this.$refs.ranklist.style['padding-bottom'] = bottom
+      this.$refs.scroll.refresh()
     }
   },
   created() {
