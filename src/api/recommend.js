@@ -1,6 +1,6 @@
 import axios from 'common/js/axios'
 export function getRecommend () {
-  const url = '/api/personalized'
+  const url = '/personalized'
   let param = {
     limit: 9
   }

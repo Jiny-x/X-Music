@@ -62,19 +62,17 @@ export default {
       })
     },
     close() {
-      console.log(11111)
       this.hidden()
     },
     playingIcon(item) {
       return item.id === this.currentSong.id ? 1 : 0
     },
     show() {
-      console.log(this.currentSong)
       this.showState = true
       setTimeout(() => {
         this.$refs.scroll.refresh()
         this.scrollToCurrent(this.currentSong)
-      })
+      }, 200)
     },
     hidden() {
       this.showState = false

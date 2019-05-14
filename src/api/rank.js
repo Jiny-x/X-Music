@@ -1,7 +1,7 @@
 import axios from 'common/js/axios'
 
 export function getRankList(idx) {
-  let url = 'api/top/list'
+  let url = '/top/list'
   let param = {
     idx: idx
   }

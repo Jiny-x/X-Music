@@ -1,5 +1,6 @@
 import axios from 'axios'
 export function getBanner () {
-  const url = '/api/banner'
+  const url = '/banner'
+  console.log(url)
   return axios(url)
 }

@@ -1,19 +1,43 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from 'components/home/Home'
-import Rank from 'components/rank/Rank'
-import Search from 'components/search/Search'
-import Singer from 'components/singer/Singer'
-import SongListSquare from 'components/song-list-square/Song-list-square'
-import Playlist from 'components/playlist/Playlist'
 
 Vue.use(Router)
+
+const Home = (resolve) => {
+  import('components/home/Home').then((Home) => {
+    resolve(Home)
+  })
+}
+
+const Rank = (resolve) => {
+  import('components/rank/Rank').then((Rank) => {
+    resolve(Rank)
+  })
+}
+
+const Singer = (resolve) => {
+  import('components/singer/Singer').then((Singer) => {
+    resolve(Singer)
+  })
+}
+
+const SongListSquare = (resolve) => {
+  import('components/song-list-square/Song-list-square').then((SongListSquare) => {
+    resolve(SongListSquare)
+  })
+}
+
+const Playlist = (resolve) => {
+  import('components/playlist/Playlist').then((Playlist) => {
+    resolve(Playlist)
+  })
+}
 
 export default new Router({
   // mode: 'history',
   routes: [
     {
-      path: '/',
+      path: '/home',
       name: 'Home',
       component: Home,
       children: [{
@@ -29,11 +53,6 @@ export default new Router({
         path: ':id',
         component: Playlist
       }]
-    },
-    {
-      path: '/search',
-      name: 'Search',
-      component: Search
     },
     {
       path: '/singer',

@@ -196,6 +196,7 @@ export default {
         this.setCurrentIndex(index)
       }, 20)
       if (!this.playing) this.playToggle()
+      this.$refs.lyr.y = 0
       this.canplayState = false
     },
     loop() {

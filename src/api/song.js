@@ -1,11 +1,12 @@
 import axios from 'common/js/axios'
 
 export function getSongUrl(id) {
-  let url = 'api/song/url?id=' + id
-  console.log(url)
+  if (!id) { return }
+  let url = '/song/url?id=' + id
   return axios(url)
 }
 export function getSongLyric(id) {
-  let url = 'api/lyric?id=' + id
+  if (!id) { return }
+  let url = '/lyric?id=' + id
   return axios(url)
 }

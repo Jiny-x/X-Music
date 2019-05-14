@@ -1,5 +1,5 @@
 <template>
-  <transition name="home" mode="out-in">
+  <transition name="home">
     <div id="home">
       <home-header></home-header>
       <scroll class="content-wrapper" :data="bannerData" ref="scroll">
@@ -13,11 +13,13 @@
       <transition name="playlist">
         <router-view></router-view>
       </transition>
+      <enter></enter>
     </div>
   </transition>
 </template>
 
 <script type="text/javascript">
+import Enter from 'components/enter/enter'
 import {getBanner} from 'api/banner'
 import {getRecommend} from 'api/recommend'
 import {getRecommendNewSong} from 'api/newSong'
@@ -35,6 +37,7 @@ export default {
   mixins: [listMixin],
   name: 'Home',
   components: {
+    Enter,
     HomeHeader,
     Banner,
     Navigation,
