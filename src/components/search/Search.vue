@@ -6,12 +6,12 @@
   </div>
 </template>
 
-<script>
+<script type="text/javascript">
 export default {
   name: 'Search'
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" rel="stylesheet" scoped>
 
 </style>

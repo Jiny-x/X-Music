@@ -19,7 +19,7 @@
   </div>
 </template>
 
-<script>
+<script type="text/javascript">
 import Loading from 'base/loading/Loading'
 import {mapMutations} from 'vuex'
 
@@ -45,7 +45,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" rel="stylesheet" scoped>
   @import '~common/styles/variable.styl'
   @import '~common/styles/mixin.styl'
   .recommend-head

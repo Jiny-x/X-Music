@@ -17,7 +17,7 @@
   </transition>
 </template>
 
-<script>
+<script type="text/javascript">
 import {getBanner} from 'api/banner'
 import {getRecommend} from 'api/recommend'
 import {getRecommendNewSong} from 'api/newSong'
@@ -114,7 +114,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" rel="stylesheet">
   #id
     position: relative
   .content-wrapper

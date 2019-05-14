@@ -9,7 +9,7 @@
   </div>
 </template>
 
-<script>
+<script type="text/javascript">
 export default {
   name: 'Banner',
   data () {
@@ -33,7 +33,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" rel="stylesheet" scoped>
   @import '~common/styles/variable.styl'
   .banner >>>.swiper-pagination-bullet-active
     width: .2rem

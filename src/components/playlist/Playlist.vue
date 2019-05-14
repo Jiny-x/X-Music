@@ -29,7 +29,7 @@
   </transition>
 </template>
 
-<script>
+<script type="text/javascript">
 import Scroll from 'base/scroll/Scroll'
 import Loading from 'base/loading/Loading'
 import {mapGetters, mapActions} from 'vuex'
@@ -107,7 +107,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" rel="stylesheet" scoped>
   @import '~common/styles/variable'
   @import '~common/styles/mixin'
   .playlist-enter-active

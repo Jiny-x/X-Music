@@ -6,13 +6,13 @@
   </div>
 </template>
 
-<script>
+<script type="text/javascript">
 export default {
   name: 'Singer'
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" rel="stylesheet" scoped>
   @import '~common/styles/variable'
   @import '~common/styles/mixin'
   .head

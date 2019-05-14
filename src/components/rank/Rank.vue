@@ -42,7 +42,7 @@
   </transition>
 </template>
 
-<script>
+<script type="text/javascript">
 import {getRankList} from 'api/rank'
 import {createSongList} from 'common/js/packData'
 import Loading from 'base/loading/Loading'
@@ -123,7 +123,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" rel="stylesheet" scoped>
   @import '~common/styles/variable'
   @import '~common/styles/mixin'
   .col-fade-enter-active, .col-fade-leave-active

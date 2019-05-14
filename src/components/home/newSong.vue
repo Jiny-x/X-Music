@@ -18,7 +18,7 @@
   </div>
 </template>
 
-<script>
+<script type="text/javascript">
 import {mapActions} from 'vuex'
 
 export default {
@@ -43,7 +43,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" rel="stylesheet" scoped>
   @import '~common/styles/variable.styl';
   @import '~common/styles/mixin.styl'
   .new-song-head

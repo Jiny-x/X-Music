@@ -15,13 +15,13 @@
   </div>
 </template>
 
-<script>
+<script type="text/javascript">
 export default {
   name: 'Navigation'
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" rel="stylesheet" scoped>
   @import '~common/styles/variable.styl'
   .navigation
     display: flex

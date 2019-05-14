@@ -6,13 +6,13 @@
   </div>
 </template>
 
-<script>
+<script type="text/javascript">
 export default {
   name: 'Header'
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" rel="stylesheet" scoped>
   @import '~common/styles/variable.styl'
   .home-header
     position: absolute

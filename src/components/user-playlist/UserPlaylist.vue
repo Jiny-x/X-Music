@@ -24,7 +24,7 @@
   </div>
 </template>
 
-<script>
+<script type="text/javascript">
 import {mapGetters, mapActions} from 'vuex'
 import Scroll from 'base/scroll/Scroll'
 
@@ -93,7 +93,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" rel="stylesheet" scoped>
   @import '~common/styles/variable'
   @import '~common/styles/mixin'
   .user-playlist-wrap
