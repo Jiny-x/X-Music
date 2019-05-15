@@ -15,7 +15,7 @@
               >
               <img class="rank-img" v-lazy="item.picUrl + '?param=200y200'">
               <div class="item-song-wrap">
-                <p class="item-song" v-for="(track,index) of item.lessTrack" :key="index">{{ track }}</p>
+                <p class="item-song" v-for="track of item.tracks" :key="track.id">{{ track.name + ' - ' + track.singer }}</p>
               </div>
             </div>
           </div>
@@ -44,7 +44,8 @@
 
 <script type="text/javascript">
 import {getRankList} from 'api/rank'
-import {createSongList} from 'common/js/packData'
+import {createSongList, createSong} from 'common/js/packData'
+import {getSongListDetail} from 'api/songList'
 import Loading from 'base/loading/Loading'
 import Scroll from 'base/scroll/Scroll'
 import {mapMutations} from 'vuex'
@@ -69,36 +70,29 @@ export default {
       setSongList: 'SET_SONGLIST'
     }),
     _getRankList() {
-      let recommendIdx = [0, 1, 2, 3, 4]
-      let indiviIdx = [17, 8, 19, 7, 6, 21, 15, 18, 22, 5, 9, 10]
-      this.mapRequet(recommendIdx, true)
-      this.mapRequet(indiviIdx)
+      getRankList().then(res => {
+        if (res.status === 200 && res.statusText === 'OK') {
+          let resList = res.data.list
+          resList.forEach((item) => {
+            let resListData = createSongList(item)
+            this.rankData.push(resListData)
+          })
+          this.recommendRank = this.rankData.slice(0, 5)
+          this.indiviRank = this.rankData.slice(5, 23)
+          this.recommendRankTrack()
+        }
+      })
     },
-    mapRequet(arr, chosen) {
-      let newData = []
-      let resData = []
-      let count = 0
-      arr.map((item, index) => {
-        getRankList(item).then(res => {
-          if (res.status === 200 && res.statusText === 'OK') {
-            resData.push(res.data)
-            count++
-            if (count === arr.length) {
-              resData.forEach(item => {
-                newData.push(createSongList(item.playlist))
-              })
-              for (let i = 0; i < 5; i++) {
-                let item = newData[i]
-                let lessTrack = []
-                for (let i = 0; i < 3; i++) {
-                  lessTrack.push(item.tracks[i].name + ' - ' + item.tracks[i].ar[0].name)
-                }
-                item.lessTrack = lessTrack
-              }
-              count = 0
-              chosen ? this.recommendRank = newData : this.indiviRank = newData
-            }
-          }
+    recommendRankTrack() {
+      this.recommendRank.forEach((item) => {
+        getSongListDetail(item.id).then(res => {
+          let originTracks = res.data.playlist.tracks.slice(0, 3)
+          let recomendData = []
+          originTracks.forEach(song => {
+            let tracksData = createSong(song)
+            recomendData.push(tracksData)
+          })
+          item.tracks = recomendData
         })
       })
     },
@@ -116,9 +110,6 @@ export default {
   },
   created() {
     this._getRankList()
-  },
-  mounted() {
-    console.log('mounted')
   }
 }
 </script>

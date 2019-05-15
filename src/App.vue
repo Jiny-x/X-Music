@@ -3,7 +3,7 @@
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
-    <player></player>
+    <player v-if="playerShow"></player>
   </div>
 </template>
 
@@ -14,6 +14,16 @@ export default {
   name: 'App',
   components: {
     Player
+  },
+  data() {
+    return {
+      playerShow: false
+    }
+  },
+  mounted() {
+    setTimeout(() => {
+      this.playerShow = true
+    }, 1500)
   }
 }
 </script>

@@ -213,7 +213,7 @@ export default {
           no-wrap-two()
     .loading-container-end
       width: 100%
-      margin-top: .3rem
+      margin-top: .2rem
 
   .col-fade-enter-active, .col-fade-leave-active
     transition: all .5s
@@ -230,5 +230,6 @@ export default {
   .list-enter-active
     transition: all .2s
   .list-enter
-    transform: translateX(50%)
+    transform: translateY(100%)
+    opacity: 0
 </style>

@@ -31,8 +31,6 @@ export default {
     progressTouchStart(e) {
       this.progressTouch.init = true
       this.progressTouch.statrX = e.touches[0].pageX
-      console.log(this.$refs.pro.offsetWidth)
-      console.log(this.progressTouch.statrX)
     },
     progressTouchMove(e) {
       if (this.progressTouch.init === false) { return }

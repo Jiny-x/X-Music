@@ -46,9 +46,16 @@
     <transition name="mini-fade">
       <div class="mini-player border-top" v-show="!fullScreen && playList.length">
         <img class="song-img" :src="`${currentSong.picUrl}?param=100y100`">
-        <div class="song-mes" @click="fullPlayer">
-          <h2 class="song-name">{{ currentSong.name }}</h2>
-          <p class="singer">{{ currentSong.singer }}</p>
+        <div class="song-mes-wrap" @click="fullPlayer">
+          <div class="song-mes"
+            @touchstart.prevent="songTouchStart"
+            @touchmove.prevent="songTouchMove"
+            ref="songMes"
+          >
+            <h2 class="song-name">{{ currentSong.name }}</h2>
+            <p class="singer">{{ currentSong.singer }}</p>
+          </div>
+
         </div>
         <span class="icon play-icon iconfont" @click="playToggle" v-html="playIcon"></span>
         <span class="icon play-list iconfont" @click="userPlaylistShow">&#xe61b;</span>
@@ -94,7 +101,8 @@ export default {
       currentLyric: [],
       lyricShow: false,
       lyricSingle: '',
-      userPlaylist: false
+      userPlaylist: false,
+      touchStartX: 0
     }
   },
   computed: {
@@ -149,9 +157,9 @@ export default {
       this.currentLineNum = lineNum
       if (lineNum > 5) {
         let lineMid = this.$refs.lyricLine[lineNum - 5]
-        this.$refs.lyr.scrollToElement && this.$refs.lyr.scrollToElement(lineMid, 1000)
+        if (this.$refs.lyr.scrollToElement) this.$refs.lyr.scrollToElement(lineMid, 1000)
       } else {
-        this.$refs.lyr.scrollToElement && this.$refs.lyr.scrollToElement(this.$refs.lyricLine[0], 1000)
+        if (this.$refs.lyr.scrollToElement) this.$refs.lyr.scrollToElement(this.$refs.lyricLine[0], 1000)
       }
       this.lyricSingle = txt
     },
@@ -186,7 +194,9 @@ export default {
       this.canplayState = false
     },
     next() { // 下一曲
-      if (!this.canplayState) { return }
+      if (!this.canplayState) {
+        console.log('nocanplsy')
+        return }
       if (this.playList.length === 1) {
         this.loop()
       }
@@ -238,6 +248,16 @@ export default {
         this.currentLyric.seek(curentTime * 1000)
       }
     },
+    songTouchStart(e) {
+      this.touchStartX = e.touches[0].pageX
+      this.canplayState = true
+    },
+    songTouchMove(e) {
+      let deltaX = e.touches[0].pageX - this.touchStartX
+      if (Math.abs(deltaX) > 50) {
+        deltaX < 0 ? this.next() : this.prev()
+      }
+    },
     updateTime(e) {
       let currentTime = e.target.currentTime
       this.currentTime = this.format(currentTime)
@@ -275,6 +295,15 @@ export default {
   watch: {
     currentSong(newSong, oldSong) {
       if (!newSong.id) { return }
+      setTimeout(() => {
+        if (!newSong.songUrl) {
+          this.error()
+          this.next()
+          if (this.currentLyric.stop) {
+            this.currentLyric.stop()
+          }
+        }
+      }, 5000)
       if (newSong.id === oldSong.id) { return }
       if (this.currentLyric.stop) {
         this.currentLyric.stop()
@@ -289,6 +318,9 @@ export default {
     },
     playing(playState) {
       console.log('playing')
+      if (!this.currentSong.songUrl) {
+        this._getSongUrl(this.currentSong.id)
+      }
       const audio = this.$refs.audio
       this.$nextTick(() => {
         if (playState) {
@@ -308,6 +340,11 @@ export default {
   },
   mounted() {
     this.init()
+    if (this.playList) {
+      this.$nextTick(() => {
+        this.playerShow = true
+      })
+    }
   }
 }
 </script>
@@ -464,21 +501,22 @@ export default {
       width: .4rem
       height: .4rem
       border-radius: 50%
-    .song-mes
+    .song-mes-wrap
       width: 50%
-      // padding-left: .1rem
-      .song-name
+      .song-mes
         width: 100%
-        font-size: $font-size-medium
-        padding-bottom: .04rem
-        line-height: .16rem
-        no-wrap()
-      .singer
-        width: 100%
-        font-size: $font-size-small-s
-        color: $color-text-dd
-        line-height: .12rem
-        no-wrap()
+        .song-name
+          width: 100%
+          font-size: $font-size-medium
+          padding-bottom: .04rem
+          line-height: .16rem
+          no-wrap()
+        .singer
+          width: 100%
+          font-size: $font-size-small-s
+          color: $color-text-dd
+          line-height: .12rem
+          no-wrap()
     .icon
       font-size: $font-size-large-x
   .col-fade-enter-active, .col-fade-leave-active
