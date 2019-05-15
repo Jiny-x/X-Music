@@ -1,8 +1,8 @@
 <template>
   <div class="enter" v-show="enterShow">
     <div class="enter-text" :class="{'fade-enter': fadeEnter, 'fade-leave': fadeLeave}">
-      <p class="text">未&nbsp来</p>
-      <p class="text">可&nbsp期</p>
+      <p class="text">未&nbsp;来</p>
+      <p class="text">可&nbsp;期</p>
     </div>
     <p class="myname">-Jinyong</p>
   </div>
@@ -24,12 +24,9 @@ export default {
         this.fadeLeave = true
         setTimeout(() => {
           this.enterShow = false
-          this.$router.push({
-            path: '/home'
-          })
         }, 500)
       }, 800)
-    }, 100);
+    }, 100)
   }
 }
 </script>
@@ -70,4 +67,3 @@ export default {
       color: rgba(61,159,208,0.6)
       font-size: 12px
 </style>
-
