@@ -4,10 +4,10 @@
       <div class="head">
         <router-link to="/" tag="span" class="back-icon iconfont">&#xe602;</router-link><h2 class="title">未知榜单</h2>
       </div>
-      <scroll class="content-wrapper" ref="scroll">
+      <scroll class="content-wrapper" ref="scroll" :data="rankData">
         <div class="rank-container recommend-rank" ref="ranklist">
-          <div class="rank-title">推荐榜</div>
-          <div class="rank-item-wrap">
+          <div class="rank-title" v-show="!loadingShow">推荐榜</div>
+          <div class="rank-item-wrap" v-show="!loadingShow">
             <div class="rank-item"
               v-for="item of recommendRank"
               :key="item.id"
@@ -19,8 +19,8 @@
               </div>
             </div>
           </div>
-          <div class="rank-title" v-show="this.recommendRank.length">个性榜</div>
-          <div class="rank-item-wrap indivi-rank">
+          <div class="rank-title" v-show="!loadingShow">个性榜</div>
+          <div class="rank-item-wrap indivi-rank" v-show="!loadingShow">
             <div class="indivi-rank-item"
             v-for="item of indiviRank"
             :key="item.id"
@@ -32,7 +32,7 @@
           </div>
         </div>
       </scroll>
-      <div class="loading-container" v-show="!this.recommendRank.length">
+      <div class="loading-container" v-show="loadingShow">
         <loading></loading>
       </div>
       <transition name="playlist">
@@ -62,7 +62,8 @@ export default {
     return {
       rankData: [],
       recommendRank: [],
-      indiviRank: []
+      indiviRank: [],
+      loadingShow: true
     }
   },
   methods: {
@@ -79,12 +80,13 @@ export default {
           })
           this.recommendRank = this.rankData.slice(0, 5)
           this.indiviRank = this.rankData.slice(5, 23)
-          this.recommendRankTrack()
+          this.recommendRankTrack(this.recommendRank)
         }
       })
     },
-    recommendRankTrack() {
-      this.recommendRank.forEach((item) => {
+    recommendRankTrack(td) {
+      let count = 0
+      td.forEach((item) => {
         getSongListDetail(item.id).then(res => {
           let originTracks = res.data.playlist.tracks.slice(0, 3)
           let recomendData = []
@@ -93,6 +95,12 @@ export default {
             recomendData.push(tracksData)
           })
           item.tracks = recomendData
+          count++
+          console.log(count)
+          if (count >= 5) {
+            console.log(count)
+            this.loadingShow = false
+          }
         })
       })
     },

@@ -46,10 +46,11 @@
     <transition name="mini-fade">
       <div class="mini-player border-top" v-show="!fullScreen && playList.length">
         <img class="song-img" :src="`${currentSong.picUrl}?param=100y100`">
-        <div class="song-mes-wrap" @click="fullPlayer">
+        <div class="song-mes-wrap">
           <div class="song-mes"
             @touchstart.prevent="songTouchStart"
             @touchmove.prevent="songTouchMove"
+            @touchend.prevent="songTouchEnd"
             ref="songMes"
           >
             <h2 class="song-name">{{ currentSong.name }}</h2>
@@ -102,7 +103,8 @@ export default {
       lyricShow: false,
       lyricSingle: '',
       userPlaylist: false,
-      touchStartX: 0
+      touchStartX: 0,
+      touchFlag: false
     }
   },
   computed: {
@@ -194,9 +196,7 @@ export default {
       this.canplayState = false
     },
     next() { // 下一曲
-      if (!this.canplayState) {
-        console.log('nocanplsy')
-        return }
+      if (!this.canplayState) { return }
       if (this.playList.length === 1) {
         this.loop()
       }
@@ -249,13 +249,21 @@ export default {
       }
     },
     songTouchStart(e) {
+      this.touchFlag = true
       this.touchStartX = e.touches[0].pageX
       this.canplayState = true
     },
     songTouchMove(e) {
+      if (e.touches[0].pageX - this.touchStartX !== 0) this.touchFlag = false
       let deltaX = e.touches[0].pageX - this.touchStartX
       if (Math.abs(deltaX) > 50) {
         deltaX < 0 ? this.next() : this.prev()
+      }
+    },
+    songTouchEnd() {
+      if (this.touchFlag) {
+        this.fullPlayer()
+        this.touchFlag = false
       }
     },
     updateTime(e) {
@@ -300,12 +308,14 @@ export default {
           this.error()
           this.next()
           if (this.currentLyric.stop) {
+            console.log('lyricstop')
             this.currentLyric.stop()
           }
         }
       }, 5000)
       if (newSong.id === oldSong.id) { return }
       if (this.currentLyric.stop) {
+        console.log('lyric')
         this.currentLyric.stop()
       }
       this._getSongUrl(newSong.id)
