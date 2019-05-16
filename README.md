@@ -5,7 +5,7 @@
 ## 技术栈
 >vue2.x/vuex/vue-router/axios/es6/stylue/swiper/better-scroll/vue-lazyload
 ## 关于接口
-感谢大神提供的Node.js API服务：[网易云音乐API](https://binaryify.github.io/NeteaseCloudMusicApi)
+感谢大佬提供的Node.js API服务：[网易云音乐API](https://binaryify.github.io/NeteaseCloudMusicApi)
 ## 功能
 - 首页
   - banner
