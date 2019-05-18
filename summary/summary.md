@@ -313,12 +313,103 @@ songData(originData) {
   return resultData
 },
 ```
-同样在拿到处理后的数据后在对应标签中`v-for`渲染即可
+同样在拿到处理后的数据后在对应标签中`v-for`循环渲染即可
+#### scroll组件
+项目中用到了`better-scroll`插件,`better-scroll`是一个移动端滚动解决方案，文档地址：[better-scroll中文文档](https://ustbhuangyi.github.io/better-scroll/doc/zh-hans/#better-scroll%20%E6%98%AF%E4%BB%80%E4%B9%88)，另外还有一篇better-scroll开发者针对在`vue`中使用`better-scroll`写的一篇文章:[当 better-scroll 遇见 Vue](https://zhuanlan.zhihu.com/p/27407024)，其中对于把第三方插件vue组件化的思想很有帮助。  
+插件安装：
+```
+npm install better-scroll --save
+```
+**scroll组件封装**  
 
+我们在组件中使用`better-scroll`需要调用到`better-scroll`里面的方法，但是当多个组件都需要这种操作的时候就会显得代码的耦合度很高，不够逼格，所以就需要对`scroll`组件进行封装  
+`scroll`组件是一个基础组件，在`base`文件夹中新建`scroll.vue`组件，组件标签很简单，这里利用了`vue`的`slot`插槽
+```html
+<template>
+  <div ref="wrapper">
+    <slot></slot>
+  </div>
+</template>
+```
+```js
+import BScroll from 'better-scroll'
+
+export default {
+  props: { // props中添加需要数据以调用对应方法
+    probeType: {
+      type: Number,
+      default: 1
+    },
+    click: {
+      type: Boolean,
+      default: true
+    },
+    listenScroll: {
+      type: Boolean,
+      default: false
+    },
+    data: {
+      type: Array,
+      default: null
+    },
+  },
+  methods: {
+    _initScroll() {
+      if (!this.$refs.wrapper) { // 保证wrapper存在
+        return
+      }
+      this.scroll = new BScroll(this.$refs.wrapper, {
+        probeType: this.probeType,
+        click: this.click
+      })
+      if (this.listenScroll) {
+        let _this = this
+        this.scroll.on('scroll', pos => {
+          _this.$emit('scroll', pos)
+        })
+      }
+    },
+    refresh() {
+      this.scroll && this.scroll.refresh()
+    },
+  },
+  watch: {
+      data() { //监听外部传入的数据变化，以刷新scroll
+        setTimeout(() => {
+          this.refresh()
+        }, this.refreshDelay)
+      }
+    },
+  mounted() {
+    setTimeout(() => {
+      this._initScroll()
+    }, 20)
+  }
+}
+```
+`better-scroll`的其它方法可查阅文档，此处不一一列举  
+
+**使用封装好的scroll组件**  
+
+在需要scroll的组件中引入
+```js
+import Scroll from 'base/scroll/Scroll'
+```
+引入组件后在在标签中写入
+```html
+<scroll class="content-wrapper" :data="bannerData" ref="scroll">
+  <div class="content" ref="list">
+    <banner @imgReady="imgReady" :bannerData="bannerData"></banner>
+    <navigation></navigation>
+    <recommend :recommendSongs="recommendSongs"></recommend>
+    <new-song :newSong="newSong" v-show="this.recommendSongs.length"></new-song>
+  </div>
+</scroll>
+```
 ---
 
 ### 歌单页
 ### 排行榜页
 ### 歌单详情页
-### 播放页
+### 播放器内核
 ### mini播放器
