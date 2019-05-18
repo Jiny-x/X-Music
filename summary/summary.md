@@ -94,11 +94,13 @@ git reset HEAD <readme.md>  // 取消暂存文件
 ```
 ---
 **关于浏览器标签栏图标**   
+
 在index.html中添加link标签
 ```html
 <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
 ```
 **styles中的文件**  
+
 reset.styl -- 样式初始化文件  
 base.styl -- 初始化样式，二次设置html,body标签的初始样式  
 border.css -- 解决移动端的一像素边框问题  
@@ -157,6 +159,7 @@ banner部分html代码
 </template>
 ```
 **banner数据引入**  
+
 项目用的vue的`axios`,因为需要对访问的地址进行参数拼接，封装了一个axios
 ```js
 import originAxios from 'axios'
@@ -184,6 +187,7 @@ export function getBanner () {
 }
 ```
 **服务器代理设置**  
+
 涉及到跨域，在config文件夹下的index.js中配置dev的`proxyTable`属性
 ```js
 proxyTable: {
@@ -208,7 +212,11 @@ _getBanner() {
 },
 ```
 **推荐歌单**  
-推荐歌单数据同banner数据的获取相同，但是从后台获取的数据很杂乱， ![](./static/recommendresult.png)  
+
+推荐歌单数据同banner数据的获取相同，但是从后台获取的数据很杂乱，  
+
+![](./static/recommendresult.png)  
+
 有些并不是我们需要的数据，我们需要对数据进行处理，因为推荐歌单的后台数据和后边歌单、排行榜的后台数据形式差不多，固我们可以封装一个数据处理方法
 在common/js中创建用于包装数据的js文件`packData.js`
 ```js
@@ -251,8 +259,11 @@ _getRecommend () {
 
 拿到数据后只需在标签中`v-for`渲染数据即可  
 **新歌组件**  
-同上拿数据，并进行渲染，不同点在于后台拿的新歌数据形式不同
+
+同上拿数据，并进行渲染，不同点在于后台拿的新歌数据形式不同  
+
 ![](./static/newsongdata.png)  
+
 我们需要拿到id,歌名，图片，歌手及歌手专辑数据所以我们需要重定义一个方法来处理此类型数据，同样在`packData`中新建方法
 ```js
 export class SongData { // es6语法糖
