@@ -128,6 +128,7 @@ import fastclick from 'fastclick'
 
 fastclick.attach(document.body)
 ```
+---
 ### 首页
 #### head
 页面头部比较简单，引入logo设置尺寸即可
@@ -211,8 +212,7 @@ _getBanner() {
   })
 },
 ```
-**推荐歌单**  
-
+#### 推荐歌单
 推荐歌单数据同banner数据的获取相同，但是从后台获取的数据很杂乱，  
 
 ![](./static/recommendresult.png)  
@@ -258,8 +258,7 @@ _getRecommend () {
 ![](./static/recomendData.png)
 
 拿到数据后只需在标签中`v-for`渲染数据即可  
-**新歌组件**  
-
+#### 新歌组件  
 同上拿数据，并进行渲染，不同点在于后台拿的新歌数据形式不同  
 
 ![](./static/newsongdata.png)  
