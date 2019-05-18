@@ -20,8 +20,10 @@ npm install -g vue-cli
 ```
 vue init webpack x-music
 ```
-用户选项,根据需要进行选择
-![](./static/init.png)
+用户选项,根据需要进行选择   
+
+![](./static/init.png)   
+
 项目初始化完成后
 ```
 cd x-music
@@ -206,7 +208,7 @@ _getBanner() {
 },
 ```
 **推荐歌单**  
-推荐歌单数据同banner数据的获取相同，但是从后台获取的数据很杂乱， ![](./static/recommendresult.png) 
+推荐歌单数据同banner数据的获取相同，但是从后台获取的数据很杂乱， ![](./static/recommendresult.png)  
 有些并不是我们需要的数据，我们需要对数据进行处理，因为推荐歌单的后台数据和后边歌单、排行榜的后台数据形式差不多，固我们可以封装一个数据处理方法
 在common/js中创建用于包装数据的js文件`packData.js`
 ```js
@@ -246,10 +248,11 @@ _getRecommend () {
 },
 ```
 ![](./static/recomendData.png)
+
 拿到数据后只需在标签中`v-for`渲染数据即可  
 **新歌组件**
 同上拿数据，并进行渲染，不同点在于后台拿的新歌数据形式不同
-![](./static/newsongdata.png)
+![](./static/newsongdata.png)  
 我们需要拿到id,歌名，图片，歌手及歌手专辑数据所以我们需要重定义一个方法来处理此类型数据，同样在`packData`中新建方法
 ```js
 export class SongData { // es6语法糖
