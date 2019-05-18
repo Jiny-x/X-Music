@@ -71,6 +71,7 @@ export default {
             newData.push(createSongList(item))
           })
           this.recommendSongs = newData
+          console.log(this.recommendSongs)
         }
       })
     },

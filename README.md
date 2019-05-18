@@ -32,9 +32,9 @@
   - 个人中心页
   - 页面优化（页面进入的流畅性，加载速度等）
 ## 项目截图
-![](./static/home.png)
-![](./static/songlist.png)
-![](./static/playlist.png)
-![](./static/player.png)
+![](./summary/static/home.png)
+![](./summary/static/songlist.png)
+![](./summary/static/playlist.png)
+![](./summary/static/player.png)
 ## 写在最后
 此项目后收获颇多，对vue的使用更加熟练同时加深了对其的理解，项目还有许多需要改进的地方，后边会陆续操作。
